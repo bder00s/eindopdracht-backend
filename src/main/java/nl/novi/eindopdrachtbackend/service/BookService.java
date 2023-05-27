@@ -23,13 +23,15 @@ public class BookService {
         book.setAuthor(bookDto.author);
         book.setTitle(bookDto.title);
         book.setYear(bookDto.year);
+        book.setGenre(bookDto.genre);
 
         bookRepository.save(book);
         String outcome = "Saved to library database:" +
                 "\n isbn: " + book.getIsbn() +
                 "\n title: " + book.getTitle() +
                 "\n author: " + book.getAuthor() +
-                "\n year: " + book.getYear();
+                "\n year: " + book.getYear() +
+                "\n genre: " + book.getGenre();
         return outcome;
     }
 

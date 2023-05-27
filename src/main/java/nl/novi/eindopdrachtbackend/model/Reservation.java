@@ -1,11 +1,11 @@
 package nl.novi.eindopdrachtbackend.model;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,12 +14,14 @@ import lombok.Setter;
 
 public class Reservation {
 
-@Id
-private Long reservationId;
+
+    @OneToMany(mappedBy = "reservation")
+    List<Book> bookList;
+
+    @Id
+    @GeneratedValue
+    private Long reservationId;
 
 
-
-
-
-    }
+}
 
