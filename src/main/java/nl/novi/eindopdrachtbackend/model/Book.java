@@ -6,8 +6,9 @@ import jakarta.persistence.Id;
 @Entity
 public class Book {
 
-@Id
-    private Long id;
-
+    @Id
+    private String isbn;
+    private String title;
+    private String author;
 
 }
