@@ -39,12 +39,13 @@ public class Book {
     Genre genre;
 
 
-    public Book(Long isbn, String author,  String title, int year, Genre genre) {
+    public Book(Long isbn, String author,  String title, int year, Genre genre, BookStatus bookStatus) {
         this.isbn = isbn;
         this.author = author;
         this.title = title;
         this.year = year;
         this.genre = genre;
+        this.bookStatus = bookStatus;
     }
 
     public Book() {

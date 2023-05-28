@@ -24,6 +24,7 @@ public class BookService {
         book.setTitle(bookDto.title);
         book.setYear(bookDto.year);
         book.setGenre(bookDto.genre);
+        book.setBookStatus(bookDto.bookStatus);
 
         bookRepository.save(book);
         String outcome = "Saved to library database:" +
@@ -31,8 +32,29 @@ public class BookService {
                 "\n title: " + book.getTitle() +
                 "\n author: " + book.getAuthor() +
                 "\n year: " + book.getYear() +
-                "\n genre: " + book.getGenre();
+                "\n genre: " + book.getGenre() +
+                "\n book available ? " + book.getBookStatus();
         return outcome;
+    }
+
+    public String updateBook(Long isbn, BookDto bookDto) {
+        Book book = bookRepository.findById(isbn).orElseThrow(() -> new RuntimeException("Book/id with: " + isbn + " not found!"));
+
+//        book.setIsbn(book.getIsbn());
+        book.setAuthor(book.getAuthor());
+        book.setTitle(book.getTitle());
+        book.setYear(book.getYear());
+        book.setGenre(book.getGenre());
+        book.setBookStatus(book.getBookStatus());
+        bookRepository.save(book);
+
+        return "Book updated!: " +
+//                "\n isbn: " + book.getIsbn() +
+                "\n title: " + book.getTitle() +
+                "\n author: " + book.getAuthor() +
+                "\n year: " + book.getYear() +
+                "\n genre: " + book.getGenre() +
+                "\n book available ? " + book.getBookStatus();
     }
 
 
