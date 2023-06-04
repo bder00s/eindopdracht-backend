@@ -1,7 +1,9 @@
 package nl.novi.eindopdrachtbackend.model;
 
 import jakarta.persistence.*;
+import nl.novi.eindopdrachtbackend.enummeration.Genre;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -10,9 +12,9 @@ import java.util.List;
 public class Catalogus {
 
  @OneToMany(mappedBy = "catalogus")
- List<Book> bookList;
+ ArrayList<Book> allBooks;
 
-
+ Genre genre;
 
     @Id
     @GeneratedValue
