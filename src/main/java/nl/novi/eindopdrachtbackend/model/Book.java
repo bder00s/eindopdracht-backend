@@ -1,4 +1,5 @@
 package nl.novi.eindopdrachtbackend.model;
+
 import nl.novi.eindopdrachtbackend.model.BookStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -27,7 +28,7 @@ public class Book {
     @ManyToOne
     Catalogus catalogus;
 
-// VARIABELEN //
+    // VARIABELEN //
     @Id
     @GeneratedValue
     private Long isbn;
@@ -35,11 +36,11 @@ public class Book {
     private String title;
 
     private int year;
-
+    @Enumerated(value = EnumType.STRING)
     Genre genre;
 
 
-    public Book(Long isbn, String author,  String title, int year, Genre genre, BookStatus bookStatus) {
+    public Book(Long isbn, String author, String title, int year, Genre genre, BookStatus bookStatus) {
         this.isbn = isbn;
         this.author = author;
         this.title = title;

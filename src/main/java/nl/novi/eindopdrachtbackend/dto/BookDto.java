@@ -1,5 +1,7 @@
 package nl.novi.eindopdrachtbackend.dto;
 
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import nl.novi.eindopdrachtbackend.enummeration.Genre;
@@ -8,6 +10,7 @@ import nl.novi.eindopdrachtbackend.model.BookStatus;
 
 public class BookDto {
 
+
     public Long isbn;
     @NotBlank
     public String author;
@@ -15,7 +18,7 @@ public class BookDto {
     public String title;
 
     public int year;
-
+    @Enumerated(value = EnumType.STRING)
     public Genre genre;
 
     public BookStatus bookStatus;
