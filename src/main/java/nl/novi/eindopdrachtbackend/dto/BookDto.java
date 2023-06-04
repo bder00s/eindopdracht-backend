@@ -1,5 +1,43 @@
 package nl.novi.eindopdrachtbackend.dto;
 
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import nl.novi.eindopdrachtbackend.enummeration.Genre;
+import nl.novi.eindopdrachtbackend.model.Book;
+
 public class BookDto {
+
+
+    public Long isbn;
+    @NotBlank
+    public String author;
+    @NotBlank
+    public String title;
+
+    public int year;
+
+    @NotNull
+    public boolean bookstatus;
+
+    @Enumerated(value = EnumType.STRING)
+    public Genre genre;
+
+
+
+
+
+    public BookDto bookDto(Book book) {
+        BookDto dto = new BookDto();
+        dto.isbn = book.getIsbn();
+        dto.author = book.getAuthor();
+        dto.title = book.getTitle();
+        dto.year = book.getYear();
+        dto.bookstatus = book.isBookstatus();
+        dto.genre = book.getGenre();
+        return dto;
+    }
+
 
 }
