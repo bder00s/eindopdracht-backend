@@ -2,11 +2,10 @@ package nl.novi.eindopdrachtbackend.dto;
 
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import nl.novi.eindopdrachtbackend.enummeration.Genre;
 import nl.novi.eindopdrachtbackend.model.Book;
-import nl.novi.eindopdrachtbackend.model.BookStatus;
 
 public class BookDto {
 
@@ -18,10 +17,15 @@ public class BookDto {
     public String title;
 
     public int year;
+
+    @NotNull
+    public boolean bookstatus;
+
     @Enumerated(value = EnumType.STRING)
     public Genre genre;
 
-    public BookStatus bookStatus;
+
+
 
 
     public BookDto bookDto(Book book) {
@@ -30,8 +34,8 @@ public class BookDto {
         dto.author = book.getAuthor();
         dto.title = book.getTitle();
         dto.year = book.getYear();
+        dto.bookstatus = book.isBookstatus();
         dto.genre = book.getGenre();
-        dto.bookStatus = book.getBookStatus();
         return dto;
     }
 

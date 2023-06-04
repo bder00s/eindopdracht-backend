@@ -16,7 +16,7 @@ import static nl.novi.eindopdrachtbackend.extraMethods.Stringbuilder.getStringbu
 
 
 @RestController
-@RequestMapping("/catalogus")
+@RequestMapping("/book")
 public class BookController {
 
 
@@ -51,6 +51,12 @@ public class BookController {
     @PutMapping("/updateBook/{isbn}")
     public ResponseEntity<BookDto> updateBook(@PathVariable Long isbn, @Valid @RequestBody BookDto bookDto) throws BookNotFoundException {
         bookService.updateBook(isbn, bookDto);
+        return ResponseEntity.ok().body(bookDto);
+    }
+
+    @PutMapping("/newBookstatus/{isbn}")
+    public ResponseEntity<BookDto> newBookstatus(@PathVariable Long isbn, @RequestBody BookDto bookDto) throws BookNotFoundException {
+        bookService.newBookStatus(isbn, bookDto);
         return ResponseEntity.ok().body(bookDto);
     }
 

@@ -25,7 +25,7 @@ public class BookService {
         book.setTitle(bookDto.title);
         book.setYear(bookDto.year);
         book.setGenre(bookDto.genre);
-        book.setBookStatus(bookDto.bookStatus);
+        book.setBookstatus(bookDto.bookstatus);
 
         bookRepository.save(book);
         String outcome = "Saved to library database:" +
@@ -34,10 +34,11 @@ public class BookService {
                 "\n author: " + book.getAuthor() +
                 "\n year: " + book.getYear() +
                 "\n genre: " + book.getGenre() +
-                "\n book available ? " + book.getBookStatus();
+                "\n book available ? " + book.isBookstatus();
         return outcome;
     }
 
+    //UPDATE BOOK - PUT METHODE //
     public String updateBook(Long isbn, BookDto bookDto) {
         Book book = bookRepository.findById(isbn).orElseThrow(() -> new BookNotFoundException("Book/id with: " + isbn + " not found!"));
 
@@ -46,8 +47,10 @@ public class BookService {
         book.setTitle(bookDto.title);
         book.setYear(bookDto.year);
         book.setGenre(bookDto.genre);
-        book.setBookStatus(bookDto.bookStatus);
+        book.setBookstatus(bookDto.bookstatus);
         bookRepository.save(book);
+
+        // ISBN RETURNS NULL WHEN USING PUT METHOD
 
         return "Book updated!: " +
                 "\n isbn: " + book.getIsbn() +
@@ -55,16 +58,27 @@ public class BookService {
                 "\n author: " + book.getAuthor() +
                 "\n year: " + book.getYear() +
                 "\n genre: " + book.getGenre() +
-                "\n book available ? " + book.getBookStatus();
+                "\n book available ? " + book.isBookstatus();
     }
 
+    //UPDATE BOOKSTATUS - PUT METHODE //
+    public String newBookStatus(Long isbn, BookDto bookDto) {
+        Book book = bookRepository.findById(isbn).orElseThrow(() -> new BookNotFoundException("Book/id with: " + isbn + " not found!"));
+        book.setBookstatus(bookDto.bookstatus);
+        bookRepository.save(book);
+        return "Status from book " + isbn + " updated to: " + book.isBookstatus();
+
+
+        //EVERYTHING ELSE RETURNS NULL WHEN USING PUT METHOD TO CHANGE STATUS
+    }
+
+
     // DELETE BOOK - DELETE METHODE //
-    public String deleteBook(Long isbn){
+    public String deleteBook(Long isbn) {
         Book book = bookRepository.findById(isbn).orElseThrow(() -> new BookNotFoundException("Book/id with: " + isbn + " not found!"));
         bookRepository.delete(book);
         return "Book with " + isbn + " successfully deleted!";
     }
-
 
 
 
