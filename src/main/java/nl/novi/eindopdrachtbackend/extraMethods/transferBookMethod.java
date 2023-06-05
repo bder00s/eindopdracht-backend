@@ -14,7 +14,7 @@ public class transferBookMethod {
         bookDto.title = book.getTitle();
         bookDto.author = book.getAuthor();
         bookDto.year = book.getYear();
-        bookDto.bookstatus = book.isBookstatus();
+        bookDto.available = book.isAvailable();
         bookDto.genre = book.getGenre();
         return bookDto;
     }

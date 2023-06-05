@@ -2,21 +2,24 @@ package nl.novi.eindopdrachtbackend.controller;
 
 import jakarta.validation.Valid;
 import nl.novi.eindopdrachtbackend.dto.BookDto;
+import nl.novi.eindopdrachtbackend.enummeration.Genre;
 import nl.novi.eindopdrachtbackend.exception.BookNotFoundException;
 import nl.novi.eindopdrachtbackend.repository.BookRepository;
 import nl.novi.eindopdrachtbackend.service.BookService;
+import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.ArrayList;
 
 import static nl.novi.eindopdrachtbackend.extraMethods.Stringbuilder.getStringbuilder;
 
 
 @RestController
-@RequestMapping("/book")
+@RequestMapping("/catalogus")
 public class BookController {
 
 
@@ -58,6 +61,21 @@ public class BookController {
     public ResponseEntity<BookDto> newBookstatus(@PathVariable Long isbn, @RequestBody BookDto bookDto) throws BookNotFoundException {
         bookService.newBookStatus(isbn, bookDto);
         return ResponseEntity.ok().body(bookDto);
+    }
+
+    @GetMapping("/author")
+    public ResponseEntity<ArrayList<BookDto>> getBooksByAuthor(@RequestParam String author){
+        return ResponseEntity.ok().body(bookService.findBooksByAuthor(author));
+    }
+
+    @GetMapping("/title")
+    public ResponseEntity<ArrayList<BookDto>> getBooksByTitle(@RequestParam String title){
+        return ResponseEntity.ok().body(bookService.findBooksByTitle(title));
+    }
+
+    @GetMapping("/genre")
+    public ResponseEntity<ArrayList<BookDto>> getBooksByGenre(@RequestParam Genre genre){
+        return ResponseEntity.ok().body(bookService.findBooksByGenre(genre));
     }
 
     @DeleteMapping("/deleteBook/{isbn}")
