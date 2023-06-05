@@ -19,7 +19,7 @@ public class BookDto {
     public int year;
 
     @NotNull
-    public boolean bookstatus;
+    public boolean available;
 
     @Enumerated(value = EnumType.STRING)
     public Genre genre;
@@ -34,7 +34,7 @@ public class BookDto {
         dto.author = book.getAuthor();
         dto.title = book.getTitle();
         dto.year = book.getYear();
-        dto.bookstatus = book.isBookstatus();
+        dto.available = book.isAvailable();
         dto.genre = book.getGenre();
         return dto;
     }

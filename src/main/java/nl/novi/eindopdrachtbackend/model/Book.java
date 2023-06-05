@@ -21,8 +21,6 @@ public class Book {
     @ManyToOne
     Reservation reservation;
 
-    @ManyToOne
-    Catalogus catalogus;
 
     // VARIABELEN //
     @Id
@@ -31,17 +29,17 @@ public class Book {
     private String author;
     private String title;
     private int year;
-    private boolean bookstatus;
+    private boolean available;
     @Enumerated(value = EnumType.STRING)
     Genre genre;
 
 
-    public Book(Long isbn, String author, String title, int year, boolean bookstatus, Genre genre) {
+    public Book(Long isbn, String author, String title, int year, boolean available, Genre genre) {
         this.isbn = isbn;
         this.author = author;
         this.title = title;
         this.year = year;
-        this.bookstatus = bookstatus;
+        this.available = available;
         this.genre = genre;
     }
 
