@@ -2,8 +2,6 @@ package nl.novi.eindopdrachtbackend.controller;
 
 
 import nl.novi.eindopdrachtbackend.dto.AuthenticationDto;
-import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
