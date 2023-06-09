@@ -6,9 +6,9 @@ public class RoleDto {
 
     @NotBlank
     public String rolename;
-    public String[] users;
 
-    public RoleDto(String rolename) {
-        this.rolename = rolename;
-    }
+
+//    public RoleDto(String rolename) {
+//        this.rolename = rolename;
+//    }
 }
