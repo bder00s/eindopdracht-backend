@@ -35,6 +35,7 @@ public class UserController {
         newUser.setUsername(userDto.username);
         newUser.setPassword(passwordEncoder.encode(userDto.password));
 
+
         List<Role> userRoles = new ArrayList<>();
         for (String rolename : userDto.roles) {
             Optional<Role> or = roleRepository.findById("ROLE_" + rolename);
@@ -44,6 +45,6 @@ public class UserController {
         newUser.setRoles(userRoles);
         userRepository.save(newUser);
 
-        return "new user " + userDto.username + " is saved.";
+        return "New user " + userDto.username + " is successfully saved.";
     }
 }

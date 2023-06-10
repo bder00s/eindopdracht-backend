@@ -10,9 +10,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -23,12 +21,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SpringSecurityConfig {
 
     //    HttpSecurity httpSecurity;
-    UserRepository userRepository;
-    JwtService jwtService;
+    private UserRepository userRepository;
+    private JwtService jwtService;
 
-    public SpringSecurityConfig(UserRepository userRepository, JwtService jwtService) {
+    public SpringSecurityConfig(UserRepository userRepository, JwtService service) {
         this.userRepository = userRepository;
-        this.jwtService = jwtService;
+        this.jwtService = service;
     }
 
     @Bean
@@ -60,7 +58,7 @@ public class SpringSecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers(HttpMethod.POST, "/users").permitAll()
                 .requestMatchers(HttpMethod.POST, "/signin").permitAll()
-                .requestMatchers("/**").authenticated()
+//                .requestMatchers("/**").authenticated()
                 .anyRequest().denyAll()
                 .and()
                 .addFilterBefore(new JwtRequestFilter(jwtService, userDetailsService()), UsernamePasswordAuthenticationFilter.class)
