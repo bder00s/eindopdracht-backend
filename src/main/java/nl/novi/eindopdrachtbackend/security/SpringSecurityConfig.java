@@ -10,10 +10,13 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -21,9 +24,11 @@ public class SpringSecurityConfig {
 
     //    HttpSecurity httpSecurity;
     UserRepository userRepository;
+    JwtService jwtService;
 
-    public SpringSecurityConfig(UserRepository userRepository) {
+    public SpringSecurityConfig(UserRepository userRepository, JwtService jwtService) {
         this.userRepository = userRepository;
+        this.jwtService = jwtService;
     }
 
     @Bean
@@ -36,6 +41,19 @@ public class SpringSecurityConfig {
     }
 
     @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return new MyUserDetailsService(this.userRepository);
+    }
+
+
+
+
+    @Bean
     protected SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .httpBasic().disable()
@@ -45,7 +63,7 @@ public class SpringSecurityConfig {
                 .requestMatchers("/**").authenticated()
                 .anyRequest().denyAll()
                 .and()
-//                .addFilterBefore(//// JWT FILTER DING)
+                .addFilterBefore(new JwtRequestFilter(jwtService, userDetailsService()), UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
@@ -54,14 +72,5 @@ public class SpringSecurityConfig {
     }
 
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return new MyUserDetailsService(this.userRepository);
-    }
 
 }
