@@ -75,6 +75,16 @@ public class BookService {
         //EVERYTHING ELSE RETURNS NULL WHEN USING PUT METHOD TO CHANGE STATUS
     }
 
+    // GET ALL BOOKS - GET METHODE //
+    public ArrayList<BookDto> getAllBooks(){
+        ArrayList<Book> allBooks = new ArrayList<>();
+        ArrayList<BookDto> allBookDtos = new ArrayList<>();
+        for (Book book : allBooks){
+            allBookDtos.add(outputTransferBookToDto(book));
+        }
+        return allBookDtos;
+    }
+
 
     //GET BOOKS BY AUTHOR - GET METHODE //
     public ArrayList<BookDto> findBooksByAuthor(String author){

@@ -19,7 +19,7 @@ import static nl.novi.eindopdrachtbackend.extraMethods.Stringbuilder.getStringbu
 
 
 @RestController
-@RequestMapping("/catalogus")
+@RequestMapping("/book")
 public class BookController {
 
 
@@ -32,7 +32,7 @@ public class BookController {
         this.bookRepository = bookRepository;
     }
 
-    @PostMapping("/newBook")
+    @PostMapping
     public ResponseEntity<Object> addBook(@Valid @RequestBody BookDto bookDto, BindingResult bindingResult) {
         //bindingResult test het resultaat en mogelijke errors
         if (bindingResult.hasFieldErrors()) {
@@ -51,30 +51,35 @@ public class BookController {
         }
     }
 
-    @PutMapping("/updateBook/{isbn}")
+    @PutMapping("/{isbn}")
     public ResponseEntity<BookDto> updateBook(@PathVariable Long isbn, @Valid @RequestBody BookDto bookDto) throws BookNotFoundException {
         bookService.updateBook(isbn, bookDto);
         return ResponseEntity.ok().body(bookDto);
     }
 
-    @PutMapping("/newBookstatus/{isbn}")
+    @PutMapping("/newstatus/{isbn}")
     public ResponseEntity<BookDto> newBookstatus(@PathVariable Long isbn, @RequestBody BookDto bookDto) throws BookNotFoundException {
         bookService.newBookStatus(isbn, bookDto);
         return ResponseEntity.ok().body(bookDto);
     }
 
+    @GetMapping("/all")
+    public ArrayList<BookDto> getAllBooks() {
+        return bookService.getAllBooks();
+    }
+
     @GetMapping("/author")
-    public ResponseEntity<ArrayList<BookDto>> getBooksByAuthor(@RequestParam String author){
+    public ResponseEntity<ArrayList<BookDto>> getBooksByAuthor(@RequestParam String author) {
         return ResponseEntity.ok().body(bookService.findBooksByAuthor(author));
     }
 
     @GetMapping("/title")
-    public ResponseEntity<ArrayList<BookDto>> getBooksByTitle(@RequestParam String title){
+    public ResponseEntity<ArrayList<BookDto>> getBooksByTitle(@RequestParam String title) {
         return ResponseEntity.ok().body(bookService.findBooksByTitle(title));
     }
 
     @GetMapping("/genre")
-    public ResponseEntity<ArrayList<BookDto>> getBooksByGenre(@RequestParam Genre genre){
+    public ResponseEntity<ArrayList<BookDto>> getBooksByGenre(@RequestParam Genre genre) {
         return ResponseEntity.ok().body(bookService.findBooksByGenre(genre));
     }
 
