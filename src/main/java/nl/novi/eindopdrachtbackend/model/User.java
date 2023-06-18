@@ -40,6 +40,9 @@ public class User {
             fetch = FetchType.EAGER)
     private Set<Authority> authorities = new HashSet<>();
 
+    public Set<Authority> getAuthorities(){
+        return authorities;
+    }
 
     public void addAuthority(Authority authority) {
         this.authorities.add(authority);
@@ -49,7 +52,7 @@ public class User {
         this.authorities.remove(authority);
     }
 
-    //
+
 //    @ManyToMany(fetch = FetchType.EAGER)
 //    private Collection<Role> roles;
 

@@ -1,50 +1,92 @@
 package nl.novi.eindopdrachtbackend.controller;
 
-
 import nl.novi.eindopdrachtbackend.dto.UserDto;
-import nl.novi.eindopdrachtbackend.model.Role;
-import nl.novi.eindopdrachtbackend.model.User;
-import nl.novi.eindopdrachtbackend.repository.RoleRepository;
-import nl.novi.eindopdrachtbackend.repository.UserRepository;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import nl.novi.eindopdrachtbackend.service.UserService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.ArrayList;
+import java.net.URI;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
+@CrossOrigin
 @RestController
+@RequestMapping(value = "/users")
 public class UserController {
 
-    UserRepository userRepository;
-    RoleRepository roleRepository;
-    PasswordEncoder passwordEncoder;
+    private final UserService userService;
 
-    public UserController(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.passwordEncoder = passwordEncoder;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    @PostMapping("/users")
-    public String createUser(@RequestBody UserDto userDto){
-        User newUser = new User();
-        newUser.setEmail(userDto.email);
-        newUser.setUsername(userDto.username);
-        newUser.setPassword(passwordEncoder.encode(userDto.password));
+    @GetMapping(value = "")
+    public ResponseEntity<List<UserDto>> getUsers() {
+
+        List<UserDto> userDtos = userService.getUsers();
+
+        return ResponseEntity.ok().body(userDtos);
+    }
+
+    @GetMapping(value = "/{username}")
+    public ResponseEntity<UserDto> getUser(@PathVariable("username") String username) {
+
+        UserDto optionalUser = userService.getUser(username);
 
 
-        List<Role> userRoles = new ArrayList<>();
-        for (String rolename : userDto.roles) {
-            Optional<Role> or = roleRepository.findById("ROLE_" + rolename);
+        return ResponseEntity.ok().body(optionalUser);
 
-            userRoles.add(or.get());
+    }
+
+    @PostMapping(value = "")
+    public ResponseEntity<UserDto> createUser(@RequestBody UserDto dto) {
+        ;
+
+        String newUsername = userService.createUser(dto);
+        userService.addAuthority(newUsername, "ROLE_USER");
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{username}")
+                .buildAndExpand(newUsername).toUri();
+
+        return ResponseEntity.created(location).build();
+    }
+
+    @PutMapping(value = "/{username}")
+    public ResponseEntity<UserDto> updateUser(@PathVariable("username") String username, @RequestBody UserDto dto) {
+
+        userService.updateUser(username, dto);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping(value = "/{username}")
+    public ResponseEntity<Object> deleteUser(@PathVariable("username") String username) {
+        userService.deleteUser(username);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping(value = "/{username}/authorities")
+    public ResponseEntity<Object> getUserAuthorities(@PathVariable("username") String username) {
+        return ResponseEntity.ok().body(userService.getAuthorities(username));
+    }
+
+    @PostMapping(value = "/{username}/authorities")
+    public ResponseEntity<Object> addUserAuthority(@PathVariable("username") String username, @RequestBody Map<String, Object> fields) {
+        try {
+            String authorityName = (String) fields.get("authority");
+            userService.addAuthority(username, authorityName);
+            return ResponseEntity.noContent().build();
+        } catch (Exception ex) {
+            throw new BadRequestException();
         }
-        newUser.setRoles(userRoles);
-        userRepository.save(newUser);
-
-        return "New user " + userDto.username + " is successfully saved.";
     }
+
+    @DeleteMapping(value = "/{username}/authorities/{authority}")
+    public ResponseEntity<Object> deleteUserAuthority(@PathVariable("username") String username, @PathVariable("authority") String authority) {
+        userService.removeAuthority(username, authority);
+        return ResponseEntity.noContent().build();
+    }
+
 }
+
