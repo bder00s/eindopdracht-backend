@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Getter
@@ -20,18 +22,37 @@ public class User {
     @Column(nullable = false, length = 255)
     private String password;
 
+    @Column
     private String email;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Collection<Role> roles;
+    @Column(nullable = false)
+    private boolean enabled = true;
 
-    public User(String username, String password, String email) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
+    @Column
+    private String apikey;
+
+
+    @OneToMany(
+            targetEntity = Authority.class,
+            mappedBy = "username",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.EAGER)
+    private Set<Authority> authorities = new HashSet<>();
+
+
+    public void addAuthority(Authority authority) {
+        this.authorities.add(authority);
     }
 
-    public User() {
-
+    public void removeAuthority(Authority authority) {
+        this.authorities.remove(authority);
     }
+
+    //
+//    @ManyToMany(fetch = FetchType.EAGER)
+//    private Collection<Role> roles;
+
+
+
 }
