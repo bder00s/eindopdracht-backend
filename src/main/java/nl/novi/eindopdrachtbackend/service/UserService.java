@@ -1,11 +1,13 @@
 package nl.novi.eindopdrachtbackend.service;
 
 import nl.novi.eindopdrachtbackend.dto.UserDto;
-import nl.novi.eindopdrachtbackend.exception.RecordNotFoundException;
 import nl.novi.eindopdrachtbackend.model.Authority;
 import nl.novi.eindopdrachtbackend.model.User;
 import nl.novi.eindopdrachtbackend.repository.UserRepository;
 import nl.novi.eindopdrachtbackend.utils.RandomStringGenerator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
@@ -18,8 +20,11 @@ import java.util.Set;
 @Service
 public class UserService {
 
-
+@Lazy
+@Autowired
+    private PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -54,7 +59,7 @@ public class UserService {
         String randomString = RandomStringGenerator.generateAlphaNumeric(20);
         userDto.setApikey(randomString);
         User newUser = userRepository.save(toUser(userDto));
-        //PASSWORD MOET ENCODED WORDEN
+
         return newUser.getUsername();
     }
 
@@ -65,7 +70,7 @@ public class UserService {
     public void updateUser(String username, UserDto newUser) {
         if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
         User user = userRepository.findById(username).get();
-        user.setPassword(newUser.getPassword());
+        user.setPassword(passwordEncoder.encode(newUser.getPassword()));
         userRepository.save(user);
     }
 
@@ -75,6 +80,7 @@ public class UserService {
         UserDto userDto = fromUser(user);
         return userDto.getAuthorities();
     }
+    // Welke rollen heeft iemand? - voor Admin
 
     public void addAuthority(String username, String authority) {
 
@@ -83,6 +89,7 @@ public class UserService {
         user.addAuthority(new Authority(username, authority));
         userRepository.save(user);
     }
+    //Rollen toevoegen - één rol per keer
 
     public void removeAuthority(String username, String authority) {
         if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
@@ -94,24 +101,24 @@ public class UserService {
 
     public static UserDto fromUser(User user) {
 
-        var dto = new UserDto();
+        UserDto userDto = new UserDto();
 
-        dto.username = user.getUsername();
-        dto.password = user.getPassword();
-        dto.enabled = user.isEnabled();
-        dto.apikey = user.getApikey();
-        dto.email = user.getEmail();
-        dto.authorities = user.getAuthorities();
+        userDto.username = user.getUsername();
+        userDto.password = user.getPassword();
+        userDto.enabled = user.isEnabled();
+        userDto.apikey = user.getApikey();
+        userDto.email = user.getEmail();
+        userDto.authorities = user.getAuthorities();
         //PASSWORD MOET ENCODED WORDEN
-        return dto;
+        return userDto;
     }
 
     public User toUser(UserDto userDto) {
 
-        var user = new User();
+        User user = new User();
 
         user.setUsername(userDto.getUsername());
-        user.setPassword(userDto.getPassword());
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setEnabled(userDto.getEnabled());
         user.setApikey(userDto.getApikey());
         user.setEmail(userDto.getEmail());
