@@ -7,9 +7,6 @@ import nl.novi.eindopdrachtbackend.model.User;
 import nl.novi.eindopdrachtbackend.repository.UserRepository;
 import nl.novi.eindopdrachtbackend.utils.RandomStringGenerator;
 import org.springframework.stereotype.Service;
-
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 
@@ -20,6 +17,8 @@ import java.util.Set;
 
 @Service
 public class UserService {
+
+
     private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {

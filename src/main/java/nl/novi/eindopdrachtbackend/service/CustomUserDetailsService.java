@@ -3,6 +3,7 @@ package nl.novi.eindopdrachtbackend.service;
 
 import nl.novi.eindopdrachtbackend.dto.UserDto;
 import nl.novi.eindopdrachtbackend.model.Authority;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,12 +20,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserService userService;
 
+//    @Autowired
+//    private AuthorityService authorityService;
+
     public CustomUserDetailsService(UserService userService) {
         this.userService = userService;
     }
 
-//    @Autowired
-//    private AuthorityService authorityService;
 
     @Override
     public UserDetails loadUserByUsername(String username) {

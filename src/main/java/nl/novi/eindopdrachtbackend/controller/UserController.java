@@ -1,6 +1,7 @@
 package nl.novi.eindopdrachtbackend.controller;
 
 import nl.novi.eindopdrachtbackend.dto.UserDto;
+import nl.novi.eindopdrachtbackend.exception.BadRequestException;
 import nl.novi.eindopdrachtbackend.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

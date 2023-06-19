@@ -21,13 +21,13 @@ public class AuthenticationController {
 
    private final AuthenticationManager authenticationManager;
 
-    private final CustomUserDetailsService customUserDetailsService;
+    private final CustomUserDetailsService userDetailsService;
 
     private final JwtUtil jwtUtl;
 
-    public AuthenticationController(AuthenticationManager authenticationManager, CustomUserDetailsService customUserDetailsService, JwtUtil jwtUtl) {
+    public AuthenticationController(AuthenticationManager authenticationManager, CustomUserDetailsService userDetailsService, JwtUtil jwtUtl) {
         this.authenticationManager = authenticationManager;
-        this.customUserDetailsService = customUserDetailsService;
+        this.userDetailsService = userDetailsService;
         this.jwtUtl = jwtUtl;
     }
 
@@ -61,7 +61,7 @@ public class AuthenticationController {
             throw new Exception("Incorrect username or password", ex);
         }
 
-        final UserDetails userDetails = customUserDetailsService
+        final UserDetails userDetails = userDetailsService
                 .loadUserByUsername(username);
 
         final String jwt = jwtUtl.generateToken(userDetails);
