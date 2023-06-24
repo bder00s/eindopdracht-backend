@@ -1,5 +1,7 @@
 package nl.novi.eindopdrachtbackend.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import nl.novi.eindopdrachtbackend.model.Authority;
 
 
@@ -8,9 +10,11 @@ import java.util.Set;
 public class UserDto {
 
     public String username;
+    @NotBlank
     public String password;
     public Boolean enabled;
     public String apikey;
+   @Email
     public String email;
     public Set<Authority> authorities;
 

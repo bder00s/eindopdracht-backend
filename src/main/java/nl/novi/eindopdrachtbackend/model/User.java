@@ -1,6 +1,7 @@
 package nl.novi.eindopdrachtbackend.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -39,6 +40,9 @@ public class User {
             orphanRemoval = true,
             fetch = FetchType.EAGER)
     private Set<Authority> authorities = new HashSet<>();
+
+    @OneToOne(cascade = CascadeType.ALL)
+    Loan loan;
 
     public Set<Authority> getAuthorities(){
         return authorities;
