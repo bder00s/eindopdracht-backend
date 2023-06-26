@@ -8,6 +8,7 @@ import nl.novi.eindopdrachtbackend.utils.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
@@ -20,9 +21,12 @@ import java.util.Set;
 @Service
 public class UserService {
 
-@Lazy
-@Autowired
+
+    @Lazy
+    @Autowired
     private PasswordEncoder passwordEncoder;
+
+
     private final UserRepository userRepository;
 
 

@@ -63,14 +63,17 @@ public class SpringSecurityConfig {
                 .cors().and()
                 .authorizeHttpRequests()
                 // Wanneer je deze uncomments, staat je hele security open. Je hebt dan alleen nog een jwt nodig.
-                .requestMatchers("/**").permitAll()
+//                .requestMatchers("/**").permitAll()
 
-                .requestMatchers(HttpMethod.GET, "/books").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.POST, "/users/**").hasAnyRole("ADMIN", "USER")
-                .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.GET, "/books").hasAnyRole("STAFF", "MEMBER")
+                .requestMatchers(HttpMethod.POST, "/books").hasRole("STAFF")
+                .requestMatchers(HttpMethod.PUT, "books/{isbn}").hasRole("STAFF")
+                .requestMatchers(HttpMethod.DELETE, "books/{isbn}").hasRole("STAFF")
+                .requestMatchers(HttpMethod.POST, "/users/**").hasAnyRole("STAFF", "MEMBER")
+                .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("STAFF")
 
                 // Je mag meerdere paths tegelijk definieren
-//                .requestMatchers("/cimodules", "/remotecontrollers", "/televisions", "/wallbrackets").hasAnyRole("ADMIN", "USER")
+
                 .requestMatchers("/authenticated").authenticated()
                 .requestMatchers("/authenticate").permitAll()
                 .anyRequest().denyAll()

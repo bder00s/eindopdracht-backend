@@ -15,7 +15,7 @@ public class Book {
 
 
     @ManyToOne
-    Loan borrowing;
+    Loan loan;
 
     @ManyToOne
     Reservation reservation;

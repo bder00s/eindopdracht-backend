@@ -83,7 +83,7 @@ public class BookController {
         return ResponseEntity.ok().body(bookService.findBooksByGenre(genre));
     }
 
-    @DeleteMapping("/deleteBook/{isbn}")
+    @DeleteMapping("/{isbn}")
     public ResponseEntity<BookDto> deleteBook(@PathVariable Long isbn) throws BookNotFoundException {
         bookService.deleteBook(isbn);
         return ResponseEntity.ok().build();
