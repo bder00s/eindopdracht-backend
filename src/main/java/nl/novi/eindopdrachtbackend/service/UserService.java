@@ -8,7 +8,6 @@ import nl.novi.eindopdrachtbackend.utils.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
@@ -39,7 +38,7 @@ public class UserService {
         List<UserDto> collection = new ArrayList<>();
         List<User> list = userRepository.findAll();
         for (User user : list) {
-            collection.add(fromUser(user));
+            collection.add(fromUserToDto(user));
         }
         return collection;
     }
@@ -48,7 +47,7 @@ public class UserService {
         UserDto userDto = new UserDto();
         Optional<User> user = userRepository.findById(username);
         if (user.isPresent()) {
-            userDto = fromUser(user.get());
+            userDto = fromUserToDto(user.get());
         } else {
             throw new UsernameNotFoundException(username);
         }
@@ -62,7 +61,7 @@ public class UserService {
     public String createUser(UserDto userDto) {
         String randomString = RandomStringGenerator.generateAlphaNumeric(20);
         userDto.setApikey(randomString);
-        User newUser = userRepository.save(toUser(userDto));
+        User newUser = userRepository.save(fromDtoToUser(userDto));
 
         return newUser.getUsername();
     }
@@ -81,7 +80,7 @@ public class UserService {
     public Set<Authority> getAuthorities(String username) {
         if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
         User user = userRepository.findById(username).get();
-        UserDto userDto = fromUser(user);
+        UserDto userDto = fromUserToDto(user);
         return userDto.getAuthorities();
     }
     // Welke rollen heeft iemand? - voor Admin
@@ -103,7 +102,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public static UserDto fromUser(User user) {
+    public static UserDto fromUserToDto(User user) {
 
         UserDto userDto = new UserDto();
 
@@ -112,12 +111,14 @@ public class UserService {
         userDto.enabled = user.isEnabled();
         userDto.apikey = user.getApikey();
         userDto.email = user.getEmail();
+        userDto.fullname = user.getFullname();
+        userDto.address = user.getAddress();
         userDto.authorities = user.getAuthorities();
-        //PASSWORD MOET ENCODED WORDEN
+
         return userDto;
     }
 
-    public User toUser(UserDto userDto) {
+    public User fromDtoToUser(UserDto userDto) {
 
         User user = new User();
 
@@ -126,7 +127,9 @@ public class UserService {
         user.setEnabled(userDto.getEnabled());
         user.setApikey(userDto.getApikey());
         user.setEmail(userDto.getEmail());
-        //PASSWORD MOET ENCODED WORDEN
+        user.setFullname(userDto.getFullname());
+        user.setAddress(userDto.getAddress());
+
         return user;
     }
 

@@ -16,6 +16,9 @@ import java.util.Set;
 @Table(name = "users")
 public class User {
 
+    @Column(nullable = false)
+    private boolean enabled = true;
+
     @Id
     @Column(nullable = false, unique = true)
     private String username;
@@ -26,8 +29,13 @@ public class User {
     @Column
     private String email;
 
-    @Column(nullable = false)
-    private boolean enabled = true;
+    @Column
+    private String fullname;
+
+    @Column
+    private String address;
+
+
 
     @Column
     private String apikey;
@@ -56,9 +64,6 @@ public class User {
         this.authorities.remove(authority);
     }
 
-
-//    @ManyToMany(fetch = FetchType.EAGER)
-//    private Collection<Role> roles;
 
 
 

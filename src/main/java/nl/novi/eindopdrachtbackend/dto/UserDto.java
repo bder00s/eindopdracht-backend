@@ -9,13 +9,16 @@ import java.util.Set;
 
 public class UserDto {
 
+    public Boolean enabled;
     public String username;
     @NotBlank
     public String password;
-    public Boolean enabled;
-    public String apikey;
-   @Email
+    @Email
     public String email;
+    public String fullname;
+    public String address;
+    public String apikey;
+
     public Set<Authority> authorities;
 
 
@@ -58,6 +61,27 @@ public class UserDto {
     public void setEmail(String email) {
         this.email = email;
     }
+
+
+    public String getFullname() {
+        return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+
+
+    // AUTHORITY GETTERS AND SETTERS //
 
     public Set<Authority> getAuthorities() {
         return authorities;
