@@ -14,12 +14,13 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.List;
 
 import static nl.novi.eindopdrachtbackend.extraMethods.Stringbuilder.getStringbuilder;
 
 
 @RestController
-@RequestMapping("/book")
+@RequestMapping("/books")
 public class BookController {
 
 
@@ -64,8 +65,10 @@ public class BookController {
     }
 
     @GetMapping("/all")
-    public ArrayList<BookDto> getAllBooks() {
-        return bookService.getAllBooks();
+    public ResponseEntity<List<BookDto>> getAllBooks() {
+
+      List<BookDto> bookDtos = bookService.getAllBooks();
+        return ResponseEntity.ok().body(bookDtos);
     }
 
     @GetMapping("/author")

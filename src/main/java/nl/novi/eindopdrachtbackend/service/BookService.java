@@ -8,6 +8,7 @@ import nl.novi.eindopdrachtbackend.repository.BookRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class BookService {
@@ -76,14 +77,14 @@ public class BookService {
     }
 
     // GET ALL BOOKS - GET METHODE //
-    public ArrayList<BookDto> getAllBooks(){
-        ArrayList<Book> allBooks = new ArrayList<>();
-        ArrayList<BookDto> allBookDtos = new ArrayList<>();
-        for (Book book : allBooks){
-            allBookDtos.add(outputTransferBookToDto(book));
+   public List<BookDto> getAllBooks(){
+        List<BookDto> bookDtoList = new ArrayList<>();
+        List<Book> bookList = bookRepository.findAll();
+        for (Book book : bookList) {
+            bookDtoList.add(outputTransferBookToDto(book));
         }
-        return allBookDtos;
-    }
+        return bookDtoList;
+   }
 
 
     //GET BOOKS BY AUTHOR - GET METHODE //

@@ -1,17 +1,17 @@
-INSERT INTO users (enabled, username, password, email, fullname, address)
-VALUES (true, 'bderoos', 'peer', 'bonne@bonne.nl', 'Bonne de Roos', 'Ergens');
-
-INSERT INTO users (enabled, username, password, email, fullname, address)
-VALUES (true, 'ollie123', 'dollen', 'ollie@hotmail.com', 'Ollie de Roos', 'zijn mandje');
-
-
-
-
+INSERT INTO users (username, password, enabled, apiKey, email, fullname, address)
+VALUES ('bderoos', 'damoseue55', true, '7fzAvwrdnNY3bPadS124', 'bonne@bonne.nl', 'Bonne de Roos', 'Ergens');
+-- --
+-- -- INSERT INTO users (enabled, username, password, email, fullname, address)
+-- -- VALUES (true, 'ollie123', 'dollen', 'ollie@hotmail.com', 'Ollie de Roos', 'zijn mandje');
+-- --
+-- --
+-- --
+--
 INSERT INTO authorities(username, authority)
 VALUES ('bderoos', 'ROLE_STAFF');
-
-INSERT INTO authorities(username, authority)
-VALUES('ollie123', 'ROLE_MEMBER');
+--
+-- INSERT INTO authorities(username, authority)
+-- VALUES('ollie123', 'ROLE_MEMBER');
 
 
 INSERT INTO books (isbn, author, title, year, available, genre)

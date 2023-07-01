@@ -64,19 +64,25 @@ public class SpringSecurityConfig {
                 .authorizeHttpRequests()
                 // Wanneer je deze uncomments, staat je hele security open. Je hebt dan alleen nog een jwt nodig.
 
-                .requestMatchers(HttpMethod.POST, "/authenticate").permitAll()
-                .requestMatchers(HttpMethod.POST, "/users/{username}/authorities").hasRole("STAFF")
+
                 .requestMatchers(HttpMethod.POST, "/users/newuser").permitAll()
-                .requestMatchers(HttpMethod.GET, "/users").hasAnyRole("STAFF", "MEMBER")
-                .requestMatchers(HttpMethod.GET, "/books").hasAnyRole("STAFF", "MEMBER")
+                .requestMatchers(HttpMethod.POST, "/authenticate").permitAll()
+                .requestMatchers(HttpMethod.GET, "/users/allusers").hasRole("STAFF")
+                .requestMatchers(HttpMethod.GET, "/users/{username}").hasAnyRole("STAFF", "MEMBER")
+                .requestMatchers(HttpMethod.PUT, "/users/**").hasAnyRole("STAFF", "MEMBER")
+                .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("STAFF")
+
+
+                .requestMatchers(HttpMethod.POST, "/users/{username}/authorities").hasRole("STAFF")
+                .requestMatchers(HttpMethod.GET, "/authenticated").hasRole("STAFF")
+
+
                 .requestMatchers(HttpMethod.POST, "/books").hasRole("STAFF")
                 .requestMatchers(HttpMethod.PUT, "/books/{isbn}").hasRole("STAFF")
                 .requestMatchers(HttpMethod.DELETE, "/books/{isbn}").hasRole("STAFF")
-                .requestMatchers(HttpMethod.PUT, "/users/**").hasAnyRole("STAFF", "MEMBER")
+                .requestMatchers(HttpMethod.GET, "/books/**").hasAnyRole("STAFF", "MEMBER")
 
 
-
-//                .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("STAFF")
 
 
                 // Je mag meerdere paths tegelijk definieren
