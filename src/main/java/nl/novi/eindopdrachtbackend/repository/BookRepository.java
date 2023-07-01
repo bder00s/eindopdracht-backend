@@ -10,7 +10,7 @@ import java.util.List;
 public interface BookRepository extends JpaRepository<Book,Long > {
 
     // MEERDERE BOEKEN ZOEKEN
-    ArrayList<Book> findBookByIsbn(Long isbn);
+//    ArrayList<Book> findBookByIsbn(Long isbn);
     ArrayList<Book> findBooksByTitleContainingIgnoreCase(String title);
     ArrayList<Book> findBooksByAuthorContainingIgnoreCase(String author);
     ArrayList<Book> findByGenre(Genre genre);

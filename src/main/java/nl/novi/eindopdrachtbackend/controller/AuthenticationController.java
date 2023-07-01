@@ -1,37 +1,73 @@
 package nl.novi.eindopdrachtbackend.controller;
 
 
-import nl.novi.eindopdrachtbackend.dto.AuthenticationDto;
+import nl.novi.eindopdrachtbackend.dto.AuthenticationRequest;
+import nl.novi.eindopdrachtbackend.dto.AuthenticationResponse;
+import nl.novi.eindopdrachtbackend.service.CustomUserDetailsService;
+import nl.novi.eindopdrachtbackend.utils.JwtUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
+@CrossOrigin
 @RestController
 public class AuthenticationController {
 
-private AuthenticationManager authenticationManager;
-//private JwtService
+   private final AuthenticationManager authenticationManager;
 
+    private final CustomUserDetailsService userDetailsService;
 
-    public AuthenticationController(AuthenticationManager authenticationManager) {
+    private final JwtUtil jwtUtl;
+
+    public AuthenticationController(AuthenticationManager authenticationManager, CustomUserDetailsService userDetailsService, JwtUtil jwtUtl) {
         this.authenticationManager = authenticationManager;
+        this.userDetailsService = userDetailsService;
+        this.jwtUtl = jwtUtl;
     }
 
-    @PostMapping("/signin")
-    public ResponseEntity<Object> signIn(@RequestBody AuthenticationDto authenticationDto){
-        UsernamePasswordAuthenticationToken usernameAndPassword =
-                new UsernamePasswordAuthenticationToken(authenticationDto.username, authenticationDto.password);
+
+    /*
+            Deze methode geeft de principal (basis user gegevens) terug van de ingelogde gebruiker
+        */
+
+    // IS IEMAND INGELOGD?
+    @GetMapping(value = "/authenticated")
+    public ResponseEntity<Object> authenticated(Authentication authentication, Principal principal) {
+        return ResponseEntity.ok().body(principal);
+    }
+
+        /*
+        Deze methode geeft het JWT token terug wanneer de gebruiker de juiste inloggegevens op geeft.
+         */
+
+    //INLOGGEN
+    @PostMapping(value = "/authenticate")
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+
+        String username = authenticationRequest.getUsername();
+        String password = authenticationRequest.getPassword();
 
         try {
-            Authentication authentication = authenticationManager.authenticate(usernameAndPassword);
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(username, password)
+            );
+        } catch (BadCredentialsException ex) {
+            throw new Exception("Incorrect username or password", ex);
+        }
 
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-//            String token = jwtService.generateToken(usernameAndPassword);
+        final UserDetails userDetails = userDetailsService
+                .loadUserByUsername(username);
 
+        final String jwt = jwtUtl.generateToken(userDetails);
+
+        return ResponseEntity.ok(new AuthenticationResponse(jwt));
     }
+
 }
+

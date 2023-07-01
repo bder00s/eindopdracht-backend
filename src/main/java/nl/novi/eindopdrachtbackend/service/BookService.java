@@ -8,6 +8,7 @@ import nl.novi.eindopdrachtbackend.repository.BookRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class BookService {
@@ -74,6 +75,16 @@ public class BookService {
 
         //EVERYTHING ELSE RETURNS NULL WHEN USING PUT METHOD TO CHANGE STATUS
     }
+
+    // GET ALL BOOKS - GET METHODE //
+   public List<BookDto> getAllBooks(){
+        List<BookDto> bookDtoList = new ArrayList<>();
+        List<Book> bookList = bookRepository.findAll();
+        for (Book book : bookList) {
+            bookDtoList.add(outputTransferBookToDto(book));
+        }
+        return bookDtoList;
+   }
 
 
     //GET BOOKS BY AUTHOR - GET METHODE //
