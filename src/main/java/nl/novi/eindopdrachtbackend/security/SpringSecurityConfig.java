@@ -58,7 +58,7 @@ public class SpringSecurityConfig {
 
         //Jwt token authentication
         http
-                .csrf().disable()
+
                 .httpBasic().disable()
                 .cors().and()
                 .authorizeHttpRequests()
@@ -68,18 +68,18 @@ public class SpringSecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/users/newuser").permitAll()
                 .requestMatchers(HttpMethod.POST, "/authenticate").permitAll()
                 .requestMatchers(HttpMethod.GET, "/users/allusers").hasRole("STAFF")
-                .requestMatchers(HttpMethod.GET, "/users/{username}").hasAnyRole("STAFF", "MEMBER")
-                .requestMatchers(HttpMethod.PUT, "/users/**").hasAnyRole("STAFF", "MEMBER")
-                .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("STAFF")
-
-
-                .requestMatchers(HttpMethod.POST, "/users/{username}/authorities").hasRole("STAFF")
-                .requestMatchers(HttpMethod.GET, "/authenticated").hasRole("STAFF")
-
-
+//                .requestMatchers(HttpMethod.GET, "/users/{username}").hasAnyRole("STAFF", "MEMBER")
+//                .requestMatchers(HttpMethod.PUT, "/users/**").hasAnyRole("STAFF", "MEMBER")
+//                .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("STAFF")
+//
+//
+//                .requestMatchers(HttpMethod.POST, "/users/{username}/authorities").hasRole("STAFF")
+//                .requestMatchers(HttpMethod.GET, "/authenticated").hasRole("STAFF")
+//
+//
                 .requestMatchers(HttpMethod.POST, "/books").hasRole("STAFF")
-                .requestMatchers(HttpMethod.PUT, "/books/{isbn}").hasRole("STAFF")
-                .requestMatchers(HttpMethod.DELETE, "/books/{isbn}").hasRole("STAFF")
+//                .requestMatchers(HttpMethod.PUT, "/books/{isbn}").hasRole("STAFF")
+//                .requestMatchers(HttpMethod.DELETE, "/books/{isbn}").hasRole("STAFF")
                 .requestMatchers(HttpMethod.GET, "/books/**").hasAnyRole("STAFF", "MEMBER")
 
 
@@ -91,7 +91,9 @@ public class SpringSecurityConfig {
                 .requestMatchers("/authenticate").permitAll()
                 .anyRequest().denyAll()
                 .and()
+                .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
