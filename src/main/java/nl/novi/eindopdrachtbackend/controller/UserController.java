@@ -54,17 +54,18 @@ public class UserController {
     }
 
     @PutMapping(value = "/{username}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable("username") String username, @RequestBody UserDto dto) {
+    public String updateUser(@PathVariable("username") String username, @RequestBody UserDto dto) {
 
         userService.updateUser(username, dto);
 
-        return ResponseEntity.noContent().build();
+//        return ResponseEntity.noContent().build();
+        return "User: " + username + " succesfully updated to: \n" + dto.username + "\n" + dto.email + "\n" + dto.fullname;
     }
 
     @DeleteMapping(value = "/{username}")
-    public ResponseEntity<Object> deleteUser(@PathVariable("username") String username) {
+    public String deleteUser(@PathVariable("username") String username) {
         userService.deleteUser(username);
-        return ResponseEntity.noContent().build();
+        return "User " + username + " succesfully deleted!";
     }
 
     @GetMapping(value = "/{username}/authorities")
