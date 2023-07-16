@@ -43,38 +43,19 @@ public class BookService {
     }
 
     //UPDATE BOOK - PUT METHODE //
-    public String updateBook(Long isbn, BookDto bookDto) {
+    public void updateBook(Long isbn, BookDto bookDto) {
         Book book = bookRepository.findById(isbn).orElseThrow(() -> new BookNotFoundException("Book/id with: " + isbn + " not found!"));
 
-//        book.setIsbn(bookDto.isbn);
+        book.setIsbn(bookDto.isbn);
         book.setAuthor(bookDto.author);
         book.setTitle(bookDto.title);
         book.setYear(bookDto.year);
         book.setGenre(bookDto.genre);
         book.setAvailable(bookDto.available);
         bookRepository.save(book);
-
-        // ISBN RETURNS NULL WHEN USING PUT METHOD
-
-        return "Book updated!: " +
-                "\n isbn: " + book.getIsbn() +
-                "\n title: " + book.getTitle() +
-                "\n author: " + book.getAuthor() +
-                "\n year: " + book.getYear() +
-                "\n genre: " + book.getGenre() +
-                "\n book available ? " + book.isAvailable();
     }
 
-    //UPDATE BOOKSTATUS - PUT METHODE //
-    public String newBookStatus(Long isbn, BookDto bookDto) {
-        Book book = bookRepository.findById(isbn).orElseThrow(() -> new BookNotFoundException("Book/id with: " + isbn + " not found!"));
-        book.setAvailable(bookDto.available);
-        bookRepository.save(book);
-        return "Status from book " + isbn + " updated to: " + book.isAvailable();
 
-
-        //EVERYTHING ELSE RETURNS NULL WHEN USING PUT METHOD TO CHANGE STATUS
-    }
 
     // GET ALL BOOKS - GET METHODE //
    public List<BookDto> getAllBooks(){

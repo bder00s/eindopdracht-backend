@@ -53,9 +53,15 @@ public class BookController {
     }
 
     @PutMapping("/{isbn}")
-    public ResponseEntity<BookDto> updateBook(@PathVariable Long isbn, @Valid @RequestBody BookDto bookDto) throws BookNotFoundException {
+    public String updateBook(@PathVariable Long isbn, @Valid @RequestBody BookDto bookDto) throws BookNotFoundException {
         bookService.updateBook(isbn, bookDto);
-        return ResponseEntity.ok().body(bookDto);
+        return "Book updated!: " +
+                "\n isbn: " + bookDto.isbn +
+                "\n title: " + bookDto.title +
+                "\n author: " + bookDto.author +
+                "\n year: " + bookDto.year +
+                "\n genre: " + bookDto.genre +
+                "\n book available ? " + bookDto.available;
     }
 
 
