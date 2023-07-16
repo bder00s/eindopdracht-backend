@@ -78,7 +78,7 @@ public class SpringSecurityConfig {
 
 
                 .requestMatchers(HttpMethod.POST, "/books").hasRole("STAFF")
-                .requestMatchers(HttpMethod.PUT, "/books/{isbn}").hasRole("STAFF") // FIXEN DAT OUTDATED BOEK NIET GEKLOOND WORDT
+                .requestMatchers(HttpMethod.PUT, "/books/{isbn}").hasRole("STAFF")
                 .requestMatchers(HttpMethod.DELETE, "/books/{isbn}").hasRole("STAFF")
                 .requestMatchers(HttpMethod.GET, "/books/all").hasAnyRole("STAFF", "MEMBER")
                 .requestMatchers(HttpMethod.GET, "/books/author").hasAnyRole("STAFF", "MEMBER")

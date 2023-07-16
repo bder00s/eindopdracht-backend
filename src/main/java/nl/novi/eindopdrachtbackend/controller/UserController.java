@@ -58,8 +58,13 @@ public class UserController {
 
         userService.updateUser(username, dto);
 
-//        return ResponseEntity.noContent().build();
-        return "User: " + username + " succesfully updated to: \n" + dto.username + "\n" + dto.email + "\n" + dto.fullname;
+
+        return "User: " + username + " succesfully updated to:" +
+                "\nemail: " + dto.email +
+                "\nfullname: " + dto.fullname +
+                "\npassword: " + dto.password +
+                "\naddress: " + dto.address +
+                "\nenabled: " + dto.enabled;
     }
 
     @DeleteMapping(value = "/{username}")

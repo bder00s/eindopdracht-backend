@@ -1,6 +1,7 @@
 package nl.novi.eindopdrachtbackend.service;
 
 import nl.novi.eindopdrachtbackend.dto.UserDto;
+import nl.novi.eindopdrachtbackend.exception.BookNotFoundException;
 import nl.novi.eindopdrachtbackend.model.Authority;
 import nl.novi.eindopdrachtbackend.model.User;
 import nl.novi.eindopdrachtbackend.repository.UserRepository;
@@ -81,19 +82,19 @@ public class UserService {
 
     /// HOE OUTDATED USER VERVANGEN VOOR UPDATED USER, IPV TWEE LOSSE USERS?
     public void updateUser(String username, UserDto updatedUser) {
-        Optional<User> optionalUser = userRepository.findById(username);
-        if (optionalUser.isPresent()) {
-//            User user = optionalUser.get();
-//            user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+        User user = userRepository.findById(username).orElseThrow(() -> new UsernameNotFoundException(errormessage));
 
-            fromDtoToUser(updatedUser);
-            userRepository.save(fromDtoToUser(updatedUser));
+        user.setEnabled(updatedUser.enabled);
+        user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+        user.setEmail(updatedUser.email);
+        user.setFullname(updatedUser.fullname);
+        user.setAddress(updatedUser.address);
+        user.setApikey(updatedUser.apikey);
+        userRepository.save(user);
 
-        } else {
-            throw new UsernameNotFoundException(errormessage);
 
-        }
     }
+
 
     public Set<Authority> getAuthorities(String username) {
         if (!userRepository.existsById(username)) throw new UsernameNotFoundException(errormessage);
@@ -101,7 +102,7 @@ public class UserService {
         UserDto userDto = fromUserToDto(user);
         return userDto.getAuthorities();
     }
-    // Welke rollen heeft iemand? - voor Admin
+
 
     public void addAuthority(String username, String authority) {
 
@@ -110,7 +111,7 @@ public class UserService {
         user.addAuthority(new Authority(username, authority));
         userRepository.save(user);
     }
-    //Rollen toevoegen - één rol per keer
+
 
     public void removeAuthority(String username, String authority) {
         if (!userRepository.existsById(username)) throw new UsernameNotFoundException(errormessage);
