@@ -71,12 +71,12 @@ public class SpringSecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/users/{username}").hasAnyRole("STAFF", "MEMBER")
                 .requestMatchers(HttpMethod.PUT, "/users/{username}").hasAnyRole("STAFF", "MEMBER") // MOET NOG GEFIXT WORDEN
                 .requestMatchers(HttpMethod.DELETE, "/users/{username}").hasRole("STAFF")
-//
-//
-//                .requestMatchers(HttpMethod.POST, "/users/{username}/authorities").hasRole("STAFF")
-//                .requestMatchers(HttpMethod.GET, "/authenticated").hasRole("STAFF")
-//
-//
+
+                .requestMatchers(HttpMethod.GET, "/users/{username}/authorities").hasRole("STAFF")
+                .requestMatchers(HttpMethod.POST, "/users/{username}/authorities").hasRole("STAFF")
+                .requestMatchers(HttpMethod.DELETE, "/users/{username}/authorities/{authority}").hasRole("STAFF")
+
+
                 .requestMatchers(HttpMethod.POST, "/books").hasRole("STAFF")
 //                .requestMatchers(HttpMethod.PUT, "/books/{isbn}").hasRole("STAFF")
 //                .requestMatchers(HttpMethod.DELETE, "/books/{isbn}").hasRole("STAFF")

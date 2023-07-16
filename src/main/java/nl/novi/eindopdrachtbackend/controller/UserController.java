@@ -74,20 +74,20 @@ public class UserController {
     }
 
     @PostMapping(value = "/{username}/authorities")
-    public ResponseEntity<Object> addUserAuthority(@PathVariable("username") String username, @RequestBody Map<String, Object> fields) {
+    public String addUserAuthority(@PathVariable("username") String username, @RequestBody Map<String, Object> fields) {
         try {
             String authorityName = (String) fields.get("authority");
             userService.addAuthority(username, authorityName);
-            return ResponseEntity.noContent().build();
+            return "New authority added to user: " + authorityName;
         } catch (Exception ex) {
             throw new BadRequestException();
         }
     }
 
     @DeleteMapping(value = "/{username}/authorities/{authority}")
-    public ResponseEntity<Object> deleteUserAuthority(@PathVariable("username") String username, @PathVariable("authority") String authority) {
+    public String deleteUserAuthority(@PathVariable("username") String username, @PathVariable("authority") String authority) {
         userService.removeAuthority(username, authority);
-        return ResponseEntity.noContent().build();
+        return "Authority: " + authority + "\nFrom user: " + username + "\nsuccesfully deleted!";
     }
 
 }
