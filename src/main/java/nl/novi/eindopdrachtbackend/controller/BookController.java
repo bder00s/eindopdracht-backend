@@ -58,11 +58,7 @@ public class BookController {
         return ResponseEntity.ok().body(bookDto);
     }
 
-    @PutMapping("/newstatus/{isbn}")
-    public ResponseEntity<BookDto> newBookstatus(@PathVariable Long isbn, @RequestBody BookDto bookDto) throws BookNotFoundException {
-        bookService.newBookStatus(isbn, bookDto);
-        return ResponseEntity.ok().body(bookDto);
-    }
+
 
     @GetMapping("/all")
     public ResponseEntity<List<BookDto>> getAllBooks() {
@@ -87,9 +83,9 @@ public class BookController {
     }
 
     @DeleteMapping("/{isbn}")
-    public ResponseEntity<BookDto> deleteBook(@PathVariable Long isbn) throws BookNotFoundException {
+    public String deleteBook(@PathVariable Long isbn) throws BookNotFoundException {
         bookService.deleteBook(isbn);
-        return ResponseEntity.ok().build();
+        return "Book with isbn " + isbn + " succesfully deleted!";
     }
 
 

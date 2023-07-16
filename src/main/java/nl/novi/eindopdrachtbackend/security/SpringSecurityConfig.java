@@ -69,7 +69,7 @@ public class SpringSecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/authenticate").permitAll()
                 .requestMatchers(HttpMethod.GET, "/users/allusers").hasRole("STAFF")
                 .requestMatchers(HttpMethod.GET, "/users/{username}").hasAnyRole("STAFF", "MEMBER")
-                .requestMatchers(HttpMethod.PUT, "/users/{username}").hasAnyRole("STAFF", "MEMBER") // MOET NOG GEFIXT WORDEN
+                .requestMatchers(HttpMethod.PUT, "/users/{username}").hasAnyRole("STAFF", "MEMBER") // FIXEN DAT OUTDATED USER NIET GEKLOOND WORDT
                 .requestMatchers(HttpMethod.DELETE, "/users/{username}").hasRole("STAFF")
 
                 .requestMatchers(HttpMethod.GET, "/users/{username}/authorities").hasRole("STAFF")
@@ -78,9 +78,12 @@ public class SpringSecurityConfig {
 
 
                 .requestMatchers(HttpMethod.POST, "/books").hasRole("STAFF")
-//                .requestMatchers(HttpMethod.PUT, "/books/{isbn}").hasRole("STAFF")
-//                .requestMatchers(HttpMethod.DELETE, "/books/{isbn}").hasRole("STAFF")
-                .requestMatchers(HttpMethod.GET, "/books/**").hasAnyRole("STAFF", "MEMBER")
+                .requestMatchers(HttpMethod.PUT, "/books/{isbn}").hasRole("STAFF") // FIXEN DAT OUTDATED BOEK NIET GEKLOOND WORDT
+                .requestMatchers(HttpMethod.DELETE, "/books/{isbn}").hasRole("STAFF")
+                .requestMatchers(HttpMethod.GET, "/books/all").hasAnyRole("STAFF", "MEMBER")
+                .requestMatchers(HttpMethod.GET, "/books/author").hasAnyRole("STAFF", "MEMBER")
+                .requestMatchers(HttpMethod.GET, "books/title").hasAnyRole("STAFF", "MEMBER")
+                .requestMatchers(HttpMethod.GET, "/books/genre").hasAnyRole("STAFF", "MEMBER")
 
 
                 // Je mag meerdere paths tegelijk definieren
