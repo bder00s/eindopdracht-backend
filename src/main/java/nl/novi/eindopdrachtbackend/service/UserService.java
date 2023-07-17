@@ -1,6 +1,7 @@
 package nl.novi.eindopdrachtbackend.service;
 
 import nl.novi.eindopdrachtbackend.dto.UserDto;
+import nl.novi.eindopdrachtbackend.exception.BookNotFoundException;
 import nl.novi.eindopdrachtbackend.model.Authority;
 import nl.novi.eindopdrachtbackend.model.User;
 import nl.novi.eindopdrachtbackend.repository.UserRepository;
@@ -43,13 +44,15 @@ public class UserService {
         return collection;
     }
 
+    String errormessage = "User not found!";
+
     public UserDto getUser(String username) {
         UserDto userDto = new UserDto();
         Optional<User> user = userRepository.findById(username);
         if (user.isPresent()) {
             userDto = fromUserToDto(user.get());
         } else {
-            throw new UsernameNotFoundException(username);
+            throw new UsernameNotFoundException(errormessage);
         }
         return userDto;
     }
@@ -67,35 +70,51 @@ public class UserService {
     }
 
     public void deleteUser(String username) {
-        userRepository.deleteById(username);
+        Optional<User> optionalUser = userRepository.findById(username);
+        if (optionalUser.isPresent()) {
+            userRepository.deleteById(username);
+
+        } else {
+            throw new UsernameNotFoundException(errormessage);
+        }
     }
 
-    public void updateUser(String username, UserDto newUser) {
-        if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
-        User user = userRepository.findById(username).get();
-        user.setPassword(passwordEncoder.encode(newUser.getPassword()));
+
+    /// HOE OUTDATED USER VERVANGEN VOOR UPDATED USER, IPV TWEE LOSSE USERS?
+    public void updateUser(String username, UserDto updatedUser) {
+        User user = userRepository.findById(username).orElseThrow(() -> new UsernameNotFoundException(errormessage));
+
+        user.setEnabled(updatedUser.enabled);
+        user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+        user.setEmail(updatedUser.email);
+        user.setFullname(updatedUser.fullname);
+        user.setAddress(updatedUser.address);
+        user.setApikey(updatedUser.apikey);
         userRepository.save(user);
+
+
     }
+
 
     public Set<Authority> getAuthorities(String username) {
-        if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
+        if (!userRepository.existsById(username)) throw new UsernameNotFoundException(errormessage);
         User user = userRepository.findById(username).get();
         UserDto userDto = fromUserToDto(user);
         return userDto.getAuthorities();
     }
-    // Welke rollen heeft iemand? - voor Admin
+
 
     public void addAuthority(String username, String authority) {
 
-        if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
+        if (!userRepository.existsById(username)) throw new UsernameNotFoundException(errormessage);
         User user = userRepository.findById(username).get();
         user.addAuthority(new Authority(username, authority));
         userRepository.save(user);
     }
-    //Rollen toevoegen - één rol per keer
+
 
     public void removeAuthority(String username, String authority) {
-        if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
+        if (!userRepository.existsById(username)) throw new UsernameNotFoundException(errormessage);
         User user = userRepository.findById(username).get();
         Authority authorityToRemove = user.getAuthorities().stream().filter((a) -> a.getAuthority().equalsIgnoreCase(authority)).findAny().get();
         user.removeAuthority(authorityToRemove);
