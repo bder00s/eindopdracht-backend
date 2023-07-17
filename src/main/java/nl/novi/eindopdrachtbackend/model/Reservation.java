@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -14,14 +15,30 @@ import java.util.List;
 
 public class Reservation {
 
-
-    @OneToMany(mappedBy = "reservation")
-    List<Book> bookList;
-
     @Id
     @GeneratedValue
+    @Column
     private Long reservationId;
 
+    @Column
+    private LocalDate dateOfReservation;
 
+    @Column
+    private boolean reservationReady;
+
+
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JsonIgnore
+//    private User user;
+
+
+    @OneToMany(mappedBy = "reservation")
+    @Column
+    List<Book> reservationContent;
+
+
+    public Reservation() {
+
+    }
 }
 

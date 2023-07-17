@@ -35,8 +35,6 @@ public class User {
     @Column
     private String address;
 
-
-
     @Column
     private String apikey;
 
@@ -49,10 +47,13 @@ public class User {
             fetch = FetchType.EAGER)
     private Set<Authority> authorities = new HashSet<>();
 
-    @OneToOne(cascade = CascadeType.ALL)
-    Loan loan;
+//    @OneToOne(cascade = CascadeType.ALL)
+//    Loan loan;
 
-    public Set<Authority> getAuthorities(){
+//    @OneToOne(mappedBy = "user")
+//    private Reservation reservation;
+
+    public Set<Authority> getAuthorities() {
         return authorities;
     }
 
@@ -63,8 +64,6 @@ public class User {
     public void removeAuthority(Authority authority) {
         this.authorities.remove(authority);
     }
-
-
 
 
 }

@@ -3,6 +3,7 @@ package nl.novi.eindopdrachtbackend.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import nl.novi.eindopdrachtbackend.model.Authority;
+import nl.novi.eindopdrachtbackend.model.Reservation;
 
 
 import java.util.Set;
@@ -18,6 +19,8 @@ public class UserDto {
     public String fullname;
     public String address;
     public String apikey;
+
+//    public Reservation reservation;
 
     public Set<Authority> authorities;
 
@@ -78,7 +81,6 @@ public class UserDto {
     public void setAddress(String address) {
         this.address = address;
     }
-
 
 
     // AUTHORITY GETTERS AND SETTERS //

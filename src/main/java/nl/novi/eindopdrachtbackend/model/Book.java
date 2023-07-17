@@ -14,29 +14,30 @@ import nl.novi.eindopdrachtbackend.enummeration.Genre;
 public class Book {
 
 
-    @ManyToOne
-    Loan loan;
-
-    @ManyToOne
-    Reservation reservation;
-
 
     // VARIABELEN //
     @Id
     @GeneratedValue
     @Column(nullable = false, unique = true)
     private Long isbn;
-   @Column
+    @Column
     private String author;
-   @Column
+    @Column
     private String title;
-   @Column
+    @Column
     private int year;
 
-   @Column
+    @Column
     private boolean available;
     @Enumerated(value = EnumType.STRING)
     Genre genre;
+
+    @ManyToOne
+    Loan loan;
+
+    @ManyToOne
+    @JoinColumn(name = "reservation_id")
+    Reservation reservation;
 
 
     public Book(Long isbn, String author, String title, int year, boolean available, Genre genre) {
