@@ -14,7 +14,6 @@ import nl.novi.eindopdrachtbackend.enummeration.Genre;
 public class Book {
 
 
-
     // VARIABELEN //
     @Id
     @GeneratedValue

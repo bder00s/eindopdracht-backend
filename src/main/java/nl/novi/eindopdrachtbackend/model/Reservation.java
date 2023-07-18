@@ -32,7 +32,7 @@ public class Reservation {
 //    private User user;
 
 
-    @OneToMany(mappedBy = "reservation")
+    @OneToMany(targetEntity = Book.class, mappedBy = "reservation")
     @Column
     List<Book> reservationContent;
 
