@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import nl.novi.eindopdrachtbackend.enummeration.Genre;
 import nl.novi.eindopdrachtbackend.model.Book;
+import nl.novi.eindopdrachtbackend.model.Reservation;
 
 public class BookDto {
 
@@ -25,6 +26,8 @@ public class BookDto {
     @Enumerated(value = EnumType.STRING)
     public Genre genre;
 
+    public Reservation reservation;
+
 
     public BookDto bookDto(Book book) {
         BookDto dto = new BookDto();
@@ -34,6 +37,7 @@ public class BookDto {
         dto.year = book.getYear();
         dto.available = book.isAvailable();
         dto.genre = book.getGenre();
+        dto.reservation = book.getReservation();
         return dto;
     }
 

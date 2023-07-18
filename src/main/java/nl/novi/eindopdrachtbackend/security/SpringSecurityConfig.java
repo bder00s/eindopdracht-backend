@@ -86,6 +86,9 @@ public class SpringSecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/books/genre").hasAnyRole("STAFF", "MEMBER")
 
 
+                .requestMatchers(HttpMethod.GET,"reservations/content/{reservationId}").hasAnyRole("STAFF", "MEMBER")
+
+
                 // Je mag meerdere paths tegelijk definieren
 
                 .requestMatchers("/authenticated").authenticated()

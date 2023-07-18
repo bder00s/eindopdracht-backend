@@ -39,13 +39,14 @@ public class Book {
     Reservation reservation;
 
 
-    public Book(Long isbn, String author, String title, int year, boolean available, Genre genre) {
+    public Book(Long isbn, String author, String title, int year, boolean available, Genre genre, Reservation reservation) {
         this.isbn = isbn;
         this.author = author;
         this.title = title;
         this.year = year;
         this.available = available;
         this.genre = genre;
+        this.reservation = reservation;
     }
 
 

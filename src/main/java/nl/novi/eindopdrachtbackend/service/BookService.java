@@ -30,6 +30,7 @@ public class BookService {
         book.setYear(bookDto.year);
         book.setGenre(bookDto.genre);
         book.setAvailable(bookDto.available);
+        book.setReservation(bookDto.reservation);
 
         bookRepository.save(book);
         String outcome = "Saved to library database:" +
@@ -52,6 +53,7 @@ public class BookService {
         book.setYear(bookDto.year);
         book.setGenre(bookDto.genre);
         book.setAvailable(bookDto.available);
+        book.setReservation(bookDto.reservation);
         bookRepository.save(book);
     }
 
@@ -117,6 +119,7 @@ public class BookService {
         bookDto.year = book.getYear();
         bookDto.available = book.isAvailable();
         bookDto.genre = book.getGenre();
+        bookDto.reservation = book.getReservation();
         return bookDto;
     }
 

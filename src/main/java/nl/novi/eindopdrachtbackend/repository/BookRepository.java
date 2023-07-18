@@ -5,7 +5,6 @@ import nl.novi.eindopdrachtbackend.model.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public interface BookRepository extends JpaRepository<Book,Long > {
 
@@ -14,6 +13,8 @@ public interface BookRepository extends JpaRepository<Book,Long > {
     ArrayList<Book> findBooksByTitleContainingIgnoreCase(String title);
     ArrayList<Book> findBooksByAuthorContainingIgnoreCase(String author);
     ArrayList<Book> findByGenre(Genre genre);
+
+    ArrayList<Book>findByReservation(Long reservation);
 
 
 }

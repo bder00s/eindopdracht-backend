@@ -20,7 +20,7 @@ public class ReservationDto {
     @NotNull
     public boolean reservationReady;
 
-    public Book book;
+   public List<Book> reservedBooks;
 //
 //    public User user;
 
