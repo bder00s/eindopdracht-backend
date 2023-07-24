@@ -23,13 +23,13 @@ public class Reservation {
     private Long reservationId;
 
     @Column
-    private LocalDate dateOfReservation;
+    private LocalDate dateOfReservation = LocalDate.now();
 
     @Column
     private boolean reservationReady;
 
     public Reservation(Long reservationId, LocalDate dateOfReservation, boolean reservationReady, List<Book> reservedBooks) {
-        this.reservationId = reservationId;
+//        this.reservationId = reservationId;
         this.dateOfReservation = dateOfReservation;
         this.reservationReady = reservationReady;
         this.reservedBooks = reservedBooks;

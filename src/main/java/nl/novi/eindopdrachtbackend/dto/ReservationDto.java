@@ -14,7 +14,7 @@ public class ReservationDto {
     @GeneratedValue
     public Long reservationId;
 
-    @NotNull
+
     public LocalDate dateOfReservation;
 
     @NotNull

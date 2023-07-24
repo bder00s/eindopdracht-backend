@@ -28,7 +28,7 @@ VALUES
     (102, 'J.K. Rowling', 'Harry Potter and the Half-Blood Prince', '2005', true,  'FANTASY');
 
 INSERT INTO reservations (reservation_id, date_of_reservation, reservation_ready)
-VALUES (54, '2023-07-17', false);
+VALUES (54, '1992-01-01', false);
 
 UPDATE books SET reservation_id = 54 WHERE isbn = 101;
 UPDATE books SET reservation_id = 54 WHERE isbn = 102;

@@ -1,11 +1,15 @@
 package nl.novi.eindopdrachtbackend.service;
 
+import nl.novi.eindopdrachtbackend.dto.BookDto;
 import nl.novi.eindopdrachtbackend.dto.ReservationDto;
+import nl.novi.eindopdrachtbackend.exception.BookNotFoundException;
+import nl.novi.eindopdrachtbackend.model.Book;
 import nl.novi.eindopdrachtbackend.model.Reservation;
 import nl.novi.eindopdrachtbackend.repository.BookRepository;
 import nl.novi.eindopdrachtbackend.repository.ReservationRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 
@@ -28,20 +32,37 @@ public class ReservationService {
 
         ArrayList<Reservation> findReservation = reservationRepository.findReservationByReservationId(reservationId);
         ArrayList<ReservationDto> reservationContent = new ArrayList<>();
-        for (Reservation reservation : findReservation){
+        for (Reservation reservation : findReservation) {
             reservationContent.add(outputTransferReservationtoDto(reservation));
         }
 
         return reservationContent;
     }
 
-//        ArrayList<Book> allBooksFromReservation = bookRepository.findByReservation(reservationNumber);
-//        ArrayList<BookDto> allReservedBooks = new ArrayList<>();
-//        for (Book book : allBooksFromReservation){
-//            allReservedBooks.add(bookService.outputTransferBookToDto(book));
-//        }
-//        return allReservedBooks;
-//    }
+    public String newReservation(ReservationDto reservationDto) {
+        Reservation reservation = new Reservation();
+        Book book = new Book();
+
+        reservation.setReservationId(reservationDto.reservationId);
+        reservation.setDateOfReservation(LocalDate.now());
+        reservation.setReservationReady(reservationDto.reservationReady);
+        reservation.setReservedBooks(reservationDto.reservedBooks);
+
+
+      book.setReservation(reservation);
+      bookRepository.save(book); /// geeft error ///
+
+
+        reservationRepository.save(reservation);
+
+        return "Reservation saved to database:" +
+                "\n reservation id: " + reservation.getReservationId() +
+                "\n date: " + reservation.getDateOfReservation() +
+                "\n reservation ready? " + reservation.isReservationReady() + "\n content of reservation: " + reservation.getBooks();
+    }
+
+
+
 
 
     public ReservationDto outputTransferReservationtoDto(Reservation reservation) {
@@ -50,8 +71,7 @@ public class ReservationService {
         reservationDto.reservationId = reservation.getReservationId();
         reservationDto.dateOfReservation = reservation.getDateOfReservation();
         reservationDto.reservationReady = reservation.isReservationReady();
-        reservationDto.reservedBooks = reservation.getBooks(); // Postman error wanneer deze actief is
-
+        reservationDto.reservedBooks = reservation.getBooks();
 
         return reservationDto;
     }
