@@ -1,5 +1,6 @@
 package nl.novi.eindopdrachtbackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,6 +37,7 @@ public class Book {
 
     @ManyToOne
     @JoinColumn(name = "reservation_id")
+    @JsonIgnore
     Reservation reservation;
 
 

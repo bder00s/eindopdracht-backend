@@ -29,7 +29,7 @@ public class ReservationService {
         ArrayList<Reservation> findReservation = reservationRepository.findReservationByReservationId(reservationId);
         ArrayList<ReservationDto> reservationContent = new ArrayList<>();
         for (Reservation reservation : findReservation){
-            reservationContent.add(outputTransferReservationDtoto(reservation));
+            reservationContent.add(outputTransferReservationtoDto(reservation));
         }
 
         return reservationContent;
@@ -44,13 +44,13 @@ public class ReservationService {
 //    }
 
 
-    public ReservationDto outputTransferReservationDtoto(Reservation reservation) {
+    public ReservationDto outputTransferReservationtoDto(Reservation reservation) {
         ReservationDto reservationDto = new ReservationDto();
-        // de nieuwe dto vullen met de waardes uit Boo
+        // de nieuwe dto vullen met de waardes uit Reservation
         reservationDto.reservationId = reservation.getReservationId();
         reservationDto.dateOfReservation = reservation.getDateOfReservation();
         reservationDto.reservationReady = reservation.isReservationReady();
-        reservationDto.reservedBooks = reservation.getBooks();
+        reservationDto.reservedBooks = reservation.getBooks(); // Postman error wanneer deze actief is
 
 
         return reservationDto;
