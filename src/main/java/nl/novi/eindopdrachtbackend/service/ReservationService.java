@@ -41,16 +41,18 @@ public class ReservationService {
 
     public String newReservation(ReservationDto reservationDto) {
         Reservation reservation = new Reservation();
-        Book book = new Book();
+//        Book book = new Book();
 
         reservation.setReservationId(reservationDto.reservationId);
         reservation.setDateOfReservation(LocalDate.now());
         reservation.setReservationReady(reservationDto.reservationReady);
         reservation.setReservedBooks(reservationDto.reservedBooks);
 
+//        reservationRepository.save(reservation);
 
-      book.setReservation(reservation);
-      bookRepository.save(book); /// geeft error ///
+//        for (Book book: reservation.getReservedBooks()) {
+//            bookService.assignBookToReservation(reservation.getReservationId(), book.getIsbn());
+//        }
 
 
         reservationRepository.save(reservation);
@@ -60,6 +62,8 @@ public class ReservationService {
                 "\n date: " + reservation.getDateOfReservation() +
                 "\n reservation ready? " + reservation.isReservationReady() + "\n content of reservation: " + reservation.getBooks();
     }
+
+
 
 
 

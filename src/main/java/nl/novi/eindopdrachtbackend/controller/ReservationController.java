@@ -50,4 +50,10 @@ public class ReservationController {
         }
     }
 
+    @PutMapping("/connectBooks/{reservationId}/{isbn}")
+    public ResponseEntity<Object> assignBookToReservation(@PathVariable ("reservationId") Long reservationId, @PathVariable ("isbn") Long isbn){
+        bookService.assignBookToReservation(reservationId, isbn);
+        return ResponseEntity.noContent().build();
+    }
+
 }

@@ -4,20 +4,26 @@ import nl.novi.eindopdrachtbackend.dto.BookDto;
 import nl.novi.eindopdrachtbackend.enummeration.Genre;
 import nl.novi.eindopdrachtbackend.exception.BookNotFoundException;
 import nl.novi.eindopdrachtbackend.model.Book;
+import nl.novi.eindopdrachtbackend.model.Reservation;
 import nl.novi.eindopdrachtbackend.repository.BookRepository;
+import nl.novi.eindopdrachtbackend.repository.ReservationRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BookService {
 
     private BookRepository bookRepository;
 
+    private ReservationRepository reservationRepository;
+
     // INJECTION //
-    public BookService(BookRepository bookRepository) {
+    public BookService(BookRepository bookRepository, ReservationRepository reservationRepository) {
         this.bookRepository = bookRepository;
+        this.reservationRepository = reservationRepository;
     }
 
     //ADD BOOK - POST METHODE //
@@ -123,4 +129,20 @@ public class BookService {
         return bookDto;
     }
 
+    public void assignBookToReservation(Long reservationId, Long isbn) {
+        ArrayList<Reservation> optionalReservation = reservationRepository.findReservationByReservationId(reservationId);
+        var optionalBook = bookRepository.findById(isbn);
+
+        if(!optionalReservation.isEmpty()&& optionalBook.isPresent()) {
+            var reservation = optionalReservation.get(0);
+            var book = optionalBook.get();
+
+            book.setReservation(reservation);
+            book.setAvailable(false);
+            // if statement if book available = false -> error message
+            bookRepository.save(book);
+        } else {
+            throw new RuntimeException("Boek niet gevonden");
+        }
+    }
 }
