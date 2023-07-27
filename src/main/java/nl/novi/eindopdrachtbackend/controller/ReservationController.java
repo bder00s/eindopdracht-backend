@@ -57,6 +57,11 @@ public class ReservationController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/user/{reservationId}/{username}")
+    public ResponseEntity<Object> assignUserToReservation(@PathVariable("reservationId") Long reservationId, @PathVariable ("username") String username){
+        reservationService.assignUserToReservation(reservationId, username);
+        return ResponseEntity.noContent().build();
+    }
 
     @DeleteMapping("/{reservationId}")
     public String deleteReservation(@PathVariable ("reservationId") Long reservationId) throws ReservationNotFoundException {

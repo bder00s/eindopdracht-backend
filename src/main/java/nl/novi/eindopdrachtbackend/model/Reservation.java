@@ -28,10 +28,11 @@ public class Reservation {
     @Column
     private boolean reservationReady;
 
-    public Reservation(Long reservationId, LocalDate dateOfReservation, boolean reservationReady, List<Book> reservedBooks) {
+    public Reservation(Long reservationId, LocalDate dateOfReservation, boolean reservationReady, User user, List<Book> reservedBooks) {
         this.reservationId = reservationId;
         this.dateOfReservation = dateOfReservation;
         this.reservationReady = reservationReady;
+        this.user = user;
         this.reservedBooks = reservedBooks;
     }
     @OneToOne(cascade = CascadeType.ALL)

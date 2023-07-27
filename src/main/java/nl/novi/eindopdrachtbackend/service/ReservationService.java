@@ -8,6 +8,7 @@ import nl.novi.eindopdrachtbackend.model.Book;
 import nl.novi.eindopdrachtbackend.model.Reservation;
 import nl.novi.eindopdrachtbackend.repository.BookRepository;
 import nl.novi.eindopdrachtbackend.repository.ReservationRepository;
+import nl.novi.eindopdrachtbackend.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -23,12 +24,15 @@ public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final BookRepository bookRepository;
 
+    private UserRepository userRepository;
+
     private BookService bookService;
 
-    public ReservationService(ReservationRepository reservationRepository, BookRepository bookRepository, BookService bookService) {
+    public ReservationService(ReservationRepository reservationRepository, BookRepository bookRepository, UserRepository userRepository, BookService bookService) {
         this.reservationRepository = reservationRepository;
         this.bookRepository = bookRepository;
         this.bookService = bookService;
+        this.userRepository = userRepository;
     }
 
     public ArrayList<ReservationDto> getReservation(Long reservationId) {
@@ -44,56 +48,66 @@ public class ReservationService {
 
     public String newReservation(ReservationDto reservationDto) {
         Reservation reservation = new Reservation();
-//        Book book = new Book();
+
 
         reservation.setReservationId(reservationDto.reservationId);
         reservation.setDateOfReservation(LocalDate.now());
         reservation.setReservationReady(reservationDto.reservationReady);
 
+        //         koppel user aan reservering
+//        assignUserToReservation(reservationDto.reservationId,
+//                reservationDto.user.getUsername());
+//        reservation.setUser(reservationDto.user);
 
         reservationRepository.save(reservation);
 
-        for (Book book: reservationDto.reservedBooks) {
+        // koppel boeken aan reservering
+        for (Book book : reservationDto.reservedBooks) {
             bookService.assignBookToReservation(reservation.getReservationId(), book.getIsbn());
         }
-
         reservation.setReservedBooks(reservationDto.reservedBooks);
-
-
+//
         reservationRepository.save(reservation);
 
         return "Reservation saved to database:" +
                 "\n reservation id: " + reservation.getReservationId() +
                 "\n date: " + reservation.getDateOfReservation() +
-                "\n reservation ready? " + reservation.isReservationReady() + "\n content of reservation: " + reservation.getBooks();
+                "\n reservation ready? " + reservation.isReservationReady() + "\n content of reservation: " + reservation.getBooks() +
+                "\n reservation made by: " + reservation.getUser();
+    }
+
+    public void assignUserToReservation(Long reservationId, String username) {
+        Optional<Reservation> optionalReservation = reservationRepository.findById(reservationId);
+        var optionalUser = userRepository.findById(username);
+
+        if (optionalReservation.isPresent() && optionalUser.isPresent()) {
+            var reservation = optionalReservation.get();
+            var user = optionalUser.get();
+
+            reservation.setUser(user);
+            reservationRepository.save(reservation);
+            userRepository.save(user);
+        } else {
+            throw new RuntimeException("Reservation/User not found!");
+        }
     }
 
 
-
-    public void deleteReservation(Long reservationId){
+    public void deleteReservation(Long reservationId) {
         Optional<Reservation> optionalReservation = reservationRepository.findById(reservationId);
 
-      List<Book> listOfBooks =  optionalReservation.get().getBooks();
-      for (Book book : listOfBooks){
+        List<Book> listOfBooks = optionalReservation.get().getBooks();
+        for (Book book : listOfBooks) {
 
-          book.setReservation(null);
-          bookRepository.save(book);
+            book.setReservation(null);
+            bookRepository.save(book);
 
-      }
+        }
 
-          reservationRepository.deleteById(reservationId);
+        reservationRepository.deleteById(reservationId);
 
 
     }
-
-
-
-
-
-
-
-
-
 
 
     public ReservationDto outputTransferReservationtoDto(Reservation reservation) {
@@ -103,6 +117,7 @@ public class ReservationService {
         reservationDto.dateOfReservation = reservation.getDateOfReservation();
         reservationDto.reservationReady = reservation.isReservationReady();
         reservationDto.reservedBooks = reservation.getBooks();
+        reservationDto.user = reservation.getUser();
 
         return reservationDto;
     }
