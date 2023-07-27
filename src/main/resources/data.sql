@@ -39,4 +39,6 @@ UPDATE books
 SET reservation_id = 54
 WHERE isbn = 102;
 
+UPDATE reservations SET user_username = 'memberstaff' WHERE reservation_id = 54;
+
 

@@ -3,6 +3,7 @@ package nl.novi.eindopdrachtbackend.controller;
 import jakarta.validation.Valid;
 import nl.novi.eindopdrachtbackend.dto.BookDto;
 import nl.novi.eindopdrachtbackend.dto.ReservationDto;
+import nl.novi.eindopdrachtbackend.exception.ReservationNotFoundException;
 import nl.novi.eindopdrachtbackend.repository.BookRepository;
 import nl.novi.eindopdrachtbackend.repository.ReservationRepository;
 import nl.novi.eindopdrachtbackend.service.BookService;
@@ -55,5 +56,13 @@ public class ReservationController {
         bookService.assignBookToReservation(reservationId, isbn);
         return ResponseEntity.noContent().build();
     }
+
+
+    @DeleteMapping("/{reservationId}/{isbn}")
+    public String deleteReservation(@PathVariable ("reservationId") Long reservationId, @PathVariable ("isbn") Long isbn) throws ReservationNotFoundException {
+        reservationService.deleteReservation(reservationId, isbn);
+        return "Reservation with id " + reservationId + " successfully deleted!";
+    }
+
 
 }

@@ -50,8 +50,8 @@ public class User {
 //    @OneToOne(cascade = CascadeType.ALL)
 //    Loan loan;
 
-//    @OneToOne(mappedBy = "user")
-//    private Reservation reservation;
+    @OneToOne(mappedBy = "user")
+    private Reservation reservation;
 
     public Set<Authority> getAuthorities() {
         return authorities;

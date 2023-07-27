@@ -29,17 +29,17 @@ public class Reservation {
     private boolean reservationReady;
 
     public Reservation(Long reservationId, LocalDate dateOfReservation, boolean reservationReady, List<Book> reservedBooks) {
-//        this.reservationId = reservationId;
+        this.reservationId = reservationId;
         this.dateOfReservation = dateOfReservation;
         this.reservationReady = reservationReady;
         this.reservedBooks = reservedBooks;
     }
-//    @OneToOne(cascade = CascadeType.ALL)
-//    @JsonIgnore
-//    private User user;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
+    private User user;
 
 
-    @OneToMany(targetEntity = Book.class, mappedBy = "reservation")
+    @OneToMany(mappedBy = "reservation")
     @Column
     List<Book> reservedBooks;
 

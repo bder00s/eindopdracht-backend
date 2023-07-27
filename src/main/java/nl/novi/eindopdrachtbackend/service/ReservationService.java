@@ -3,6 +3,7 @@ package nl.novi.eindopdrachtbackend.service;
 import nl.novi.eindopdrachtbackend.dto.BookDto;
 import nl.novi.eindopdrachtbackend.dto.ReservationDto;
 import nl.novi.eindopdrachtbackend.exception.BookNotFoundException;
+import nl.novi.eindopdrachtbackend.exception.ReservationNotFoundException;
 import nl.novi.eindopdrachtbackend.model.Book;
 import nl.novi.eindopdrachtbackend.model.Reservation;
 import nl.novi.eindopdrachtbackend.repository.BookRepository;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Optional;
 
 
 @Service
@@ -49,10 +51,10 @@ public class ReservationService {
         reservation.setReservedBooks(reservationDto.reservedBooks);
 
 //        reservationRepository.save(reservation);
-
-//        for (Book book: reservation.getReservedBooks()) {
-//            bookService.assignBookToReservation(reservation.getReservationId(), book.getIsbn());
-//        }
+////
+////        for (Book book: reservation.getBooks()) {
+////            bookService.assignBookToReservation(reservation.getReservationId(), book.getIsbn());
+////        }
 
 
         reservationRepository.save(reservation);
@@ -61,6 +63,25 @@ public class ReservationService {
                 "\n reservation id: " + reservation.getReservationId() +
                 "\n date: " + reservation.getDateOfReservation() +
                 "\n reservation ready? " + reservation.isReservationReady() + "\n content of reservation: " + reservation.getBooks();
+    }
+
+    public void deleteReservation(Long reservationId, Long isbn){
+        Optional<Reservation> optionalReservation = reservationRepository.findById(reservationId);
+
+        var optionalBook = bookRepository.findById(isbn);
+
+        if(!optionalReservation.isEmpty()&& optionalBook.isPresent()) {
+            var reservation = optionalReservation.get();
+            var book = optionalBook.get();
+
+            book.setReservation(null);
+            bookRepository.save(book);
+            reservationRepository.delete(reservation);
+
+        } else {
+            throw new RuntimeException("Book/reservation not found!");
+        }
+
     }
 
 

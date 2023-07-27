@@ -130,11 +130,11 @@ public class BookService {
     }
 
     public void assignBookToReservation(Long reservationId, Long isbn) {
-        ArrayList<Reservation> optionalReservation = reservationRepository.findReservationByReservationId(reservationId);
+        Optional<Reservation> optionalReservation = reservationRepository.findById(reservationId);
         var optionalBook = bookRepository.findById(isbn);
 
         if(!optionalReservation.isEmpty()&& optionalBook.isPresent()) {
-            var reservation = optionalReservation.get(0);
+            var reservation = optionalReservation.get();
             var book = optionalBook.get();
 
             book.setReservation(reservation);
@@ -142,7 +142,7 @@ public class BookService {
             // if statement if book available = false -> error message
             bookRepository.save(book);
         } else {
-            throw new RuntimeException("Boek niet gevonden");
+            throw new RuntimeException("Book/Reservation not found!");
         }
     }
 }

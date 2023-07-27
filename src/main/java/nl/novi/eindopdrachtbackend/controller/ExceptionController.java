@@ -3,6 +3,7 @@ package nl.novi.eindopdrachtbackend.controller;
 import nl.novi.eindopdrachtbackend.exception.BadRequestException;
 import nl.novi.eindopdrachtbackend.exception.BookNotFoundException;
 import nl.novi.eindopdrachtbackend.exception.RecordNotFoundException;
+import nl.novi.eindopdrachtbackend.exception.ReservationNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,6 +17,11 @@ public class ExceptionController {
     @ExceptionHandler(value = BookNotFoundException.class)
     public ResponseEntity<Object> exception(BookNotFoundException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(value = ReservationNotFoundException.class)
+    public ResponseEntity<Object> exception (ReservationNotFoundException reservationNotFoundException) {
+        return new ResponseEntity<>(reservationNotFoundException.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(value = RecordNotFoundException.class)

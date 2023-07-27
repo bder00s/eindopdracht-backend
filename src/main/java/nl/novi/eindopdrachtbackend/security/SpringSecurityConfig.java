@@ -89,6 +89,7 @@ public class SpringSecurityConfig {
                 .requestMatchers(HttpMethod.GET,"reservations/content/{reservationId}").hasAnyRole("STAFF", "MEMBER")
                 .requestMatchers(HttpMethod.POST, "/reservations").hasAnyRole("STAFF", "MEMBER")
                 .requestMatchers(HttpMethod.PUT, "/reservations/connectBooks/**").hasAnyRole("STAFF", "MEMBER")
+                .requestMatchers(HttpMethod.DELETE, "/reservations/{reservationId}/**").hasRole("STAFF")
 
 
                 // Je mag meerdere paths tegelijk definieren
