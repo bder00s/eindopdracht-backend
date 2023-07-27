@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -48,13 +49,15 @@ public class ReservationService {
         reservation.setReservationId(reservationDto.reservationId);
         reservation.setDateOfReservation(LocalDate.now());
         reservation.setReservationReady(reservationDto.reservationReady);
-        reservation.setReservedBooks(reservationDto.reservedBooks);
 
-//        reservationRepository.save(reservation);
-////
-////        for (Book book: reservation.getBooks()) {
-////            bookService.assignBookToReservation(reservation.getReservationId(), book.getIsbn());
-////        }
+
+        reservationRepository.save(reservation);
+
+        for (Book book: reservationDto.reservedBooks) {
+            bookService.assignBookToReservation(reservation.getReservationId(), book.getIsbn());
+        }
+
+        reservation.setReservedBooks(reservationDto.reservedBooks);
 
 
         reservationRepository.save(reservation);
@@ -65,24 +68,27 @@ public class ReservationService {
                 "\n reservation ready? " + reservation.isReservationReady() + "\n content of reservation: " + reservation.getBooks();
     }
 
-    public void deleteReservation(Long reservationId, Long isbn){
+
+
+    public void deleteReservation(Long reservationId){
         Optional<Reservation> optionalReservation = reservationRepository.findById(reservationId);
 
-        var optionalBook = bookRepository.findById(isbn);
+      List<Book> listOfBooks =  optionalReservation.get().getBooks();
+      for (Book book : listOfBooks){
 
-        if(!optionalReservation.isEmpty()&& optionalBook.isPresent()) {
-            var reservation = optionalReservation.get();
-            var book = optionalBook.get();
+          book.setReservation(null);
+          bookRepository.save(book);
 
-            book.setReservation(null);
-            bookRepository.save(book);
-            reservationRepository.delete(reservation);
+      }
 
-        } else {
-            throw new RuntimeException("Book/reservation not found!");
-        }
+          reservationRepository.deleteById(reservationId);
+
 
     }
+
+
+
+
 
 
 

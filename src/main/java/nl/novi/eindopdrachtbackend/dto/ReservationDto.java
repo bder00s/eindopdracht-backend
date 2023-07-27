@@ -21,8 +21,8 @@ public class ReservationDto {
     public boolean reservationReady;
 
    public List<Book> reservedBooks;
-//
-//    public User user;
+
+    public User user;
 
 
 }

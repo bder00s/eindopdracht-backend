@@ -58,9 +58,9 @@ public class ReservationController {
     }
 
 
-    @DeleteMapping("/{reservationId}/{isbn}")
-    public String deleteReservation(@PathVariable ("reservationId") Long reservationId, @PathVariable ("isbn") Long isbn) throws ReservationNotFoundException {
-        reservationService.deleteReservation(reservationId, isbn);
+    @DeleteMapping("/{reservationId}")
+    public String deleteReservation(@PathVariable ("reservationId") Long reservationId) throws ReservationNotFoundException {
+        reservationService.deleteReservation(reservationId);
         return "Reservation with id " + reservationId + " successfully deleted!";
     }
 
