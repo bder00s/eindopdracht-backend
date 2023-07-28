@@ -46,35 +46,7 @@ public class ReservationService {
         return reservationContent;
     }
 
-    public String newReservation(ReservationDto reservationDto) {
-        Reservation reservation = new Reservation();
 
-
-        reservation.setReservationId(reservationDto.reservationId);
-        reservation.setDateOfReservation(LocalDate.now());
-        reservation.setReservationReady(reservationDto.reservationReady);
-
-        //         koppel user aan reservering
-//        assignUserToReservation(reservationDto.reservationId,
-//                reservationDto.user.getUsername());
-//        reservation.setUser(reservationDto.user);
-
-        reservationRepository.save(reservation);
-
-        // koppel boeken aan reservering
-        for (Book book : reservationDto.reservedBooks) {
-            bookService.assignBookToReservation(reservation.getReservationId(), book.getIsbn());
-        }
-        reservation.setReservedBooks(reservationDto.reservedBooks);
-//
-        reservationRepository.save(reservation);
-
-        return "Reservation saved to database:" +
-                "\n reservation id: " + reservation.getReservationId() +
-                "\n date: " + reservation.getDateOfReservation() +
-                "\n reservation ready? " + reservation.isReservationReady() + "\n content of reservation: " + reservation.getBooks() +
-                "\n reservation made by: " + reservation.getUser();
-    }
 
     public void assignUserToReservation(Long reservationId, String username) {
         Optional<Reservation> optionalReservation = reservationRepository.findById(reservationId);
@@ -93,6 +65,60 @@ public class ReservationService {
     }
 
 
+
+
+    public String newReservation(ReservationDto reservationDto) {
+        Reservation reservation = new Reservation();
+
+
+        reservation.setReservationId(reservationDto.reservationId);
+        reservation.setDateOfReservation(LocalDate.now());
+        reservation.setReservationReady(reservationDto.reservationReady);
+
+        reservationRepository.save(reservation);
+
+        //         koppel user aan reservering
+//        assignUserToReservation(reservation.getReservationId(),
+//                reservationDto.user.getUsername());
+//        reservation.setOwnerOfReservation(reservationDto.user);
+
+        // koppel boeken aan reservering
+        for (Book book : reservationDto.reservedBooks) {
+            bookService.assignBookToReservation(reservation.getReservationId(), book.getIsbn());
+        }
+        reservation.setReservedBooks(reservationDto.reservedBooks);
+//
+        reservationRepository.save(reservation);
+
+        return "Reservation saved to database:" +
+                "\n reservation id: " + reservation.getReservationId() +
+                "\n date: " + reservation.getDateOfReservation() +
+                "\n reservation ready? " + reservation.isReservationReady() + "\n content of reservation: " + reservation.getBooks(); //GEEFT NOG NIET DE TITEL VAN BOEKEN WEER - ALLEEN DTO INFO
+    }
+    // USER TEGELIJKERTIJD KOPPELEN IN DIT REQUEST WERKT NIET   
+
+    public void updateReservation(Long reservationId, ReservationDto reservationDto){
+        Reservation reservation = reservationRepository.findById(reservationId).orElseThrow(() -> new ReservationNotFoundException("Reservation not found!"));
+
+
+        reservation.setReservationId(reservationDto.reservationId);
+        reservation.setDateOfReservation(LocalDate.now());
+        reservation.setReservationReady(reservationDto.reservationReady);
+        reservation.setUser(reservationDto.user);
+
+        reservationRepository.save(reservation);
+
+        // koppel boeken aan reservering
+        for (Book book : reservationDto.reservedBooks) {
+            bookService.assignBookToReservation(reservation.getReservationId(), book.getIsbn());
+        }
+        reservation.setReservedBooks(reservationDto.reservedBooks);
+
+
+        reservationRepository.save(reservation);
+    }
+    // WERKT NIET ALS ER EEN USER GEKOPPELD IS??
+
     public void deleteReservation(Long reservationId) {
         Optional<Reservation> optionalReservation = reservationRepository.findById(reservationId);
 
@@ -109,7 +135,7 @@ public class ReservationService {
 
     }
 
-
+// OUTPUT TRANSFER DTO
     public ReservationDto outputTransferReservationtoDto(Reservation reservation) {
         ReservationDto reservationDto = new ReservationDto();
         // de nieuwe dto vullen met de waardes uit Reservation
@@ -120,6 +146,18 @@ public class ReservationService {
         reservationDto.user = reservation.getUser();
 
         return reservationDto;
+    }
+
+    // INPUT TRANSFER DTO
+    public Reservation inputTransferDtoToReservation(ReservationDto reservationDto){
+        Reservation reservation = new Reservation();
+
+        reservation.setReservationId(reservationDto.reservationId);
+        reservation.setDateOfReservation(reservationDto.dateOfReservation);
+        reservation.setReservationReady(reservationDto.reservationReady);
+        reservation.setReservedBooks(reservationDto.reservedBooks);
+
+        return reservation;
     }
 
 }

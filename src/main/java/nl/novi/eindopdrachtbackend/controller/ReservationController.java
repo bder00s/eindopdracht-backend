@@ -63,6 +63,12 @@ public class ReservationController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/update/{reservationId}")
+    public String updateReservation(@PathVariable Long reservationId, @Valid @RequestBody ReservationDto reservationDto) throws ReservationNotFoundException {
+        reservationService.updateReservation(reservationId, reservationDto);
+        return "Reservation with id " + reservationId + " successfully updated.";
+    }
+
     @DeleteMapping("/{reservationId}")
     public String deleteReservation(@PathVariable ("reservationId") Long reservationId) throws ReservationNotFoundException {
         reservationService.deleteReservation(reservationId);

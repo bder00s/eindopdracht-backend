@@ -89,6 +89,7 @@ public class SpringSecurityConfig {
                 .requestMatchers(HttpMethod.GET,"reservations/content/{reservationId}").hasAnyRole("STAFF", "MEMBER")
                 .requestMatchers(HttpMethod.POST, "/reservations").hasAnyRole("STAFF", "MEMBER")
                 .requestMatchers(HttpMethod.PUT, "/reservations/connectBooks/**").hasAnyRole("STAFF", "MEMBER")
+                .requestMatchers(HttpMethod.PUT, "/reservations/update/{reservationId}").hasRole("STAFF")
                 .requestMatchers(HttpMethod.DELETE, "/reservations/{reservationId}/**").hasRole("STAFF")
                 .requestMatchers(HttpMethod.PUT, "/reservations/user/**").hasAnyRole("STAFF", "MEMBER")
 

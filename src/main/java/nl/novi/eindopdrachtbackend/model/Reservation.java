@@ -48,7 +48,13 @@ public class Reservation {
         return reservedBooks;
     }
 
+    public User getOwnerOfReservation(){
+        return user;
+    }
 
+    public void setOwnerOfReservation(User user) {
+        this.user = user;
+    }
 
     public Reservation() {
 
