@@ -36,7 +36,7 @@ public class Reservation {
         this.reservedBooks = reservedBooks;
     }
     @OneToOne(cascade = CascadeType.ALL)
-    @JsonIgnore
+//    @JsonIgnore
     private User user;
 
 

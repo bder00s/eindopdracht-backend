@@ -1,5 +1,6 @@
 package nl.novi.eindopdrachtbackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.Getter;
@@ -51,6 +52,7 @@ public class User {
 //    Loan loan;
 
     @OneToOne(mappedBy = "user")
+    @JsonIgnore
     private Reservation reservation;
 
     public Set<Authority> getAuthorities() {

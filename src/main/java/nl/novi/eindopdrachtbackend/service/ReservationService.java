@@ -36,16 +36,13 @@ public class ReservationService {
     }
 
     public ArrayList<ReservationDto> getReservation(Long reservationId) {
-
         ArrayList<Reservation> findReservation = reservationRepository.findReservationByReservationId(reservationId);
         ArrayList<ReservationDto> reservationContent = new ArrayList<>();
         for (Reservation reservation : findReservation) {
             reservationContent.add(outputTransferReservationtoDto(reservation));
         }
-
         return reservationContent;
     }
-
 
 
     public void assignUserToReservation(Long reservationId, String username) {
@@ -63,8 +60,6 @@ public class ReservationService {
             throw new RuntimeException("Reservation/User not found!");
         }
     }
-
-
 
 
     public String newReservation(ReservationDto reservationDto) {
@@ -95,16 +90,16 @@ public class ReservationService {
                 "\n date: " + reservation.getDateOfReservation() +
                 "\n reservation ready? " + reservation.isReservationReady() + "\n content of reservation: " + reservation.getBooks(); //GEEFT NOG NIET DE TITEL VAN BOEKEN WEER - ALLEEN DTO INFO
     }
-    // USER TEGELIJKERTIJD KOPPELEN IN DIT REQUEST WERKT NIET   
+    // USER TEGELIJKERTIJD KOPPELEN IN DIT REQUEST WERKT NIET
 
-    public void updateReservation(Long reservationId, ReservationDto reservationDto){
+    public void updateReservation(Long reservationId, ReservationDto reservationDto) {
         Reservation reservation = reservationRepository.findById(reservationId).orElseThrow(() -> new ReservationNotFoundException("Reservation not found!"));
 
 
         reservation.setReservationId(reservationDto.reservationId);
         reservation.setDateOfReservation(LocalDate.now());
         reservation.setReservationReady(reservationDto.reservationReady);
-        reservation.setUser(reservationDto.user);
+      
 
         reservationRepository.save(reservation);
 
@@ -135,7 +130,7 @@ public class ReservationService {
 
     }
 
-// OUTPUT TRANSFER DTO
+    // OUTPUT TRANSFER DTO
     public ReservationDto outputTransferReservationtoDto(Reservation reservation) {
         ReservationDto reservationDto = new ReservationDto();
         // de nieuwe dto vullen met de waardes uit Reservation
@@ -143,19 +138,24 @@ public class ReservationService {
         reservationDto.dateOfReservation = reservation.getDateOfReservation();
         reservationDto.reservationReady = reservation.isReservationReady();
         reservationDto.reservedBooks = reservation.getBooks();
-        reservationDto.user = reservation.getUser();
+        reservationDto.user = reservation.getOwnerOfReservation();
+// ^zorgt voor Postman error
 
         return reservationDto;
     }
 
+
+
     // INPUT TRANSFER DTO
-    public Reservation inputTransferDtoToReservation(ReservationDto reservationDto){
+    public Reservation inputTransferDtoToReservation(ReservationDto reservationDto) {
         Reservation reservation = new Reservation();
 
         reservation.setReservationId(reservationDto.reservationId);
         reservation.setDateOfReservation(reservationDto.dateOfReservation);
         reservation.setReservationReady(reservationDto.reservationReady);
         reservation.setReservedBooks(reservationDto.reservedBooks);
+
+
 
         return reservation;
     }

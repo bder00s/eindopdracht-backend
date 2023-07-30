@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import nl.novi.eindopdrachtbackend.dto.BookDto;
 import nl.novi.eindopdrachtbackend.dto.ReservationDto;
 import nl.novi.eindopdrachtbackend.exception.ReservationNotFoundException;
+import nl.novi.eindopdrachtbackend.model.Reservation;
 import nl.novi.eindopdrachtbackend.repository.BookRepository;
 import nl.novi.eindopdrachtbackend.repository.ReservationRepository;
 import nl.novi.eindopdrachtbackend.service.BookService;
@@ -34,10 +35,12 @@ public class ReservationController {
         this.bookRepository = bookRepository;
     }
 
+
     @GetMapping("/content/{reservationId}")
     public ResponseEntity<ArrayList<ReservationDto>> getReservationContent(@PathVariable Long reservationId) {
         return ResponseEntity.ok().body(reservationService.getReservation(reservationId));
     }
+
 
     @PostMapping
     public ResponseEntity<Object> addReservation(@Valid @RequestBody ReservationDto reservationDto, BindingResult bindingResult) {
