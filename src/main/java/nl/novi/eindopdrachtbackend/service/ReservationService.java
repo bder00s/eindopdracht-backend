@@ -99,7 +99,7 @@ public class ReservationService {
         reservation.setReservationId(reservationDto.reservationId);
         reservation.setDateOfReservation(LocalDate.now());
         reservation.setReservationReady(reservationDto.reservationReady);
-      
+
 
         reservationRepository.save(reservation);
 
@@ -112,21 +112,21 @@ public class ReservationService {
 
         reservationRepository.save(reservation);
     }
-    // WERKT NIET ALS ER EEN USER GEKOPPELD IS??
+
 
     public void deleteReservation(Long reservationId) {
-        Optional<Reservation> optionalReservation = reservationRepository.findById(reservationId);
+        Reservation reservation = reservationRepository.findById(reservationId).orElseThrow(() -> new ReservationNotFoundException("Reservation not found!")) ;
 
-        List<Book> listOfBooks = optionalReservation.get().getBooks();
+        List<Book> listOfBooks = reservation.getBooks();
         for (Book book : listOfBooks) {
 
             book.setReservation(null);
+            reservation.setOwnerOfReservation(null);
+            reservationRepository.save(reservation);
             bookRepository.save(book);
-
         }
 
         reservationRepository.deleteById(reservationId);
-
 
     }
 
