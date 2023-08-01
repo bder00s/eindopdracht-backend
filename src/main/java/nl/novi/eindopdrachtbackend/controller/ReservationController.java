@@ -3,6 +3,7 @@ package nl.novi.eindopdrachtbackend.controller;
 import jakarta.validation.Valid;
 import nl.novi.eindopdrachtbackend.dto.BookDto;
 import nl.novi.eindopdrachtbackend.dto.ReservationDto;
+import nl.novi.eindopdrachtbackend.dto.ReservationOutputDto;
 import nl.novi.eindopdrachtbackend.exception.ReservationNotFoundException;
 import nl.novi.eindopdrachtbackend.model.Reservation;
 import nl.novi.eindopdrachtbackend.repository.BookRepository;
@@ -37,7 +38,7 @@ public class ReservationController {
 
 
     @GetMapping("/content/{reservationId}")
-    public ResponseEntity<ArrayList<ReservationDto>> getReservationContent(@PathVariable Long reservationId) {
+    public ResponseEntity<ArrayList<ReservationOutputDto>> getReservationContent(@PathVariable Long reservationId) {
         return ResponseEntity.ok().body(reservationService.getReservation(reservationId));
     }
 

@@ -1,6 +1,7 @@
 package nl.novi.eindopdrachtbackend.controller;
 
 import nl.novi.eindopdrachtbackend.dto.UserDto;
+import nl.novi.eindopdrachtbackend.dto.UserOutputDto;
 import nl.novi.eindopdrachtbackend.exception.BadRequestException;
 import nl.novi.eindopdrachtbackend.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +24,9 @@ public class UserController {
     }
 
     @GetMapping("/allusers")
-    public ResponseEntity<List<UserDto>> getUsers() {
+    public ResponseEntity<List<UserOutputDto>> getUsers() {
 
-        List<UserDto> userDtos = userService.getUsers();
+        List<UserOutputDto> userDtos = userService.getUsers();
 
         return ResponseEntity.ok().body(userDtos);
     }

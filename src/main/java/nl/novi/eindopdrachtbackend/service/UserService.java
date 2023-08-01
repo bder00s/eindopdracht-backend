@@ -1,6 +1,7 @@
 package nl.novi.eindopdrachtbackend.service;
 
 import nl.novi.eindopdrachtbackend.dto.UserDto;
+import nl.novi.eindopdrachtbackend.dto.UserOutputDto;
 import nl.novi.eindopdrachtbackend.exception.BookNotFoundException;
 import nl.novi.eindopdrachtbackend.model.Authority;
 import nl.novi.eindopdrachtbackend.model.User;
@@ -35,11 +36,11 @@ public class UserService {
     }
 
 
-    public List<UserDto> getUsers() {
-        List<UserDto> collection = new ArrayList<>();
+    public List<UserOutputDto> getUsers() {
+        List<UserOutputDto> collection = new ArrayList<>();
         List<User> list = userRepository.findAll();
         for (User user : list) {
-            collection.add(fromUserToDto(user));
+            collection.add(simpleUserOutput(user));
         }
         return collection;
     }
@@ -119,6 +120,16 @@ public class UserService {
         Authority authorityToRemove = user.getAuthorities().stream().filter((a) -> a.getAuthority().equalsIgnoreCase(authority)).findAny().get();
         user.removeAuthority(authorityToRemove);
         userRepository.save(user);
+    }
+
+    public static UserOutputDto simpleUserOutput(User user) {
+        UserOutputDto userOutputDto = new UserOutputDto();
+
+        userOutputDto.username = user.getUsername();
+        userOutputDto.email = user.getEmail();
+        userOutputDto.fullname = user.getFullname();
+
+        return userOutputDto;
     }
 
     public static UserDto fromUserToDto(User user) {

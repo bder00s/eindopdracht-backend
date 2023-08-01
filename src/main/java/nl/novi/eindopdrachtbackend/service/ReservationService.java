@@ -2,6 +2,7 @@ package nl.novi.eindopdrachtbackend.service;
 
 import nl.novi.eindopdrachtbackend.dto.BookDto;
 import nl.novi.eindopdrachtbackend.dto.ReservationDto;
+import nl.novi.eindopdrachtbackend.dto.ReservationOutputDto;
 import nl.novi.eindopdrachtbackend.exception.BookNotFoundException;
 import nl.novi.eindopdrachtbackend.exception.ReservationNotFoundException;
 import nl.novi.eindopdrachtbackend.model.Book;
@@ -35,11 +36,11 @@ public class ReservationService {
         this.userRepository = userRepository;
     }
 
-    public ArrayList<ReservationDto> getReservation(Long reservationId) {
+    public ArrayList<ReservationOutputDto> getReservation(Long reservationId) {
         ArrayList<Reservation> findReservation = reservationRepository.findReservationByReservationId(reservationId);
-        ArrayList<ReservationDto> reservationContent = new ArrayList<>();
+        ArrayList<ReservationOutputDto> reservationContent = new ArrayList<>();
         for (Reservation reservation : findReservation) {
-            reservationContent.add(outputTransferReservationtoDto(reservation));
+            reservationContent.add(simpleOutput(reservation));
         }
         return reservationContent;
     }
@@ -130,6 +131,17 @@ public class ReservationService {
 
     }
 
+    public ReservationOutputDto simpleOutput(Reservation reservation){
+        ReservationOutputDto reservationOutputDto = new ReservationOutputDto();
+
+        reservationOutputDto.reservationId = reservation.getReservationId();
+        reservationOutputDto.dateOfReservation = reservation.getDateOfReservation();
+        reservationOutputDto.reservationReady = reservation.isReservationReady();
+        reservationOutputDto.reservedBooks = reservationOutputDto.setBooksOutput(reservation.getReservedBooks());
+        reservationOutputDto.user = reservation.getUser();
+    return reservationOutputDto;
+    }
+
     // OUTPUT TRANSFER DTO
     public ReservationDto outputTransferReservationtoDto(Reservation reservation) {
         ReservationDto reservationDto = new ReservationDto();
@@ -139,7 +151,7 @@ public class ReservationService {
         reservationDto.reservationReady = reservation.isReservationReady();
         reservationDto.reservedBooks = reservation.getBooks();
         reservationDto.user = reservation.getOwnerOfReservation();
-// ^zorgt voor Postman error
+
 
         return reservationDto;
     }
