@@ -54,7 +54,7 @@ public class ReservationService {
             var reservation = optionalReservation.get();
             var user = optionalUser.get();
 
-            reservation.setUser(user);
+            reservation.setOwnerOfReservation(user);
             reservationRepository.save(reservation);
             userRepository.save(user);
         } else {
@@ -73,10 +73,7 @@ public class ReservationService {
 
         reservationRepository.save(reservation);
 
-        //         koppel user aan reservering
-//        assignUserToReservation(reservation.getReservationId(),
-//                reservationDto.user.getUsername());
-//        reservation.setOwnerOfReservation(reservationDto.user);
+
 
         // koppel boeken aan reservering
         for (Book book : reservationDto.reservedBooks) {
@@ -91,17 +88,16 @@ public class ReservationService {
                 "\n date: " + reservation.getDateOfReservation() +
                 "\n reservation ready? " + reservation.isReservationReady() + "\n content of reservation: " + reservation.getBooks(); //GEEFT NOG NIET DE TITEL VAN BOEKEN WEER - ALLEEN DTO INFO
     }
-    // USER TEGELIJKERTIJD KOPPELEN IN DIT REQUEST WERKT NIET
+
 
     public void updateReservation(Long reservationId, ReservationDto reservationDto) {
         Reservation reservation = reservationRepository.findById(reservationId).orElseThrow(() -> new ReservationNotFoundException("Reservation not found!"));
-
 
         reservation.setReservationId(reservationDto.reservationId);
         reservation.setDateOfReservation(LocalDate.now());
         reservation.setReservationReady(reservationDto.reservationReady);
 
-
+        
         reservationRepository.save(reservation);
 
         // koppel boeken aan reservering
@@ -138,9 +134,17 @@ public class ReservationService {
         reservationOutputDto.dateOfReservation = reservation.getDateOfReservation();
         reservationOutputDto.reservationReady = reservation.isReservationReady();
         reservationOutputDto.reservedBooks = reservationOutputDto.setBooksOutput(reservation.getReservedBooks());
-        reservationOutputDto.user = reservation.getUser();
-    return reservationOutputDto;
+        reservationOutputDto.user = reservationOutputDto.setUserOutput(reservation.getUser());
+
+
+        return reservationOutputDto;
     }
+
+
+
+
+
+
 
     // OUTPUT TRANSFER DTO
     public ReservationDto outputTransferReservationtoDto(Reservation reservation) {
@@ -150,7 +154,7 @@ public class ReservationService {
         reservationDto.dateOfReservation = reservation.getDateOfReservation();
         reservationDto.reservationReady = reservation.isReservationReady();
         reservationDto.reservedBooks = reservation.getBooks();
-        reservationDto.user = reservation.getOwnerOfReservation();
+//        reservationDto.user = reservation.getOwnerOfReservation();
 
 
         return reservationDto;

@@ -22,7 +22,7 @@ public class ReservationDto {
 
    public List<Book> reservedBooks;
 
-    public User user;
+    public UserOutputDto user;
 
 
     ////

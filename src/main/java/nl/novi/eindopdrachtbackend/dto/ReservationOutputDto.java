@@ -17,29 +17,33 @@ public class ReservationOutputDto {
     public Long reservationId;
     public LocalDate dateOfReservation;
     public boolean reservationReady;
-    public List<Book> reservedBooks;
-    public User user;
+    public List<BookOutputDto> reservedBooks;
+    public UserOutputDto user;
 
 
 
-    public List<Book> setBooksOutput(List<Book> shortList) {
-        List<Book> reservedBooks = new ArrayList<>();
+    public List<BookOutputDto> setBooksOutput(List<Book> shortList) {
+        List<BookOutputDto> reservedBooks = new ArrayList<>();
 
         for (int i = 0; i < shortList.size(); i++) {
-            Book newBook = new Book();
-            newBook.setIsbn(shortList.get(i).getIsbn());
-            newBook.setTitle(shortList.get(i).getTitle());
-            newBook.setAuthor(shortList.get(i).getAuthor());
-            reservedBooks.add(newBook);
+            BookOutputDto shortBook = new BookOutputDto();
+            shortBook.setIsbn(shortList.get(i).getIsbn());
+            shortBook.setTitle(shortList.get(i).getTitle());
+            shortBook.setAuthor(shortList.get(i).getAuthor());
+            reservedBooks.add(shortBook);
         }
         return reservedBooks;
     }
 
-//    public User getUserOutput(User shortUser) {
-//        return shortUser.getUsername() + "\n" +
-//                shortUser.getEmail() + "\n" +
-//                shortUser.getFullname();
-//    }
+    public UserOutputDto setUserOutput(User user) {
+        UserOutputDto shortUser = new UserOutputDto();
+
+        shortUser.setUsername(user.getUsername());
+        shortUser.setEmail(user.getEmail());
+        shortUser.setFullname(user.getFullname());
+
+        return shortUser;
+    }
 
 }
 
