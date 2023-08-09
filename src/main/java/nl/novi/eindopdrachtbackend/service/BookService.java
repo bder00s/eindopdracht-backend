@@ -1,6 +1,7 @@
 package nl.novi.eindopdrachtbackend.service;
 
 import nl.novi.eindopdrachtbackend.dto.BookDto;
+import nl.novi.eindopdrachtbackend.dto.BookOutputDto;
 import nl.novi.eindopdrachtbackend.enummeration.Genre;
 import nl.novi.eindopdrachtbackend.exception.BookNotFoundException;
 import nl.novi.eindopdrachtbackend.model.Book;
@@ -117,7 +118,8 @@ public class BookService {
 
     public BookDto outputTransferBookToDto(Book book) {
         BookDto bookDto = new BookDto();
-        // de nieuwe dto vullen met de waardes uit Boo
+        BookOutputDto bookOutputDto = new BookOutputDto();
+
         bookDto.isbn = book.getIsbn();
         bookDto.title = book.getTitle();
         bookDto.author = book.getAuthor();
@@ -125,6 +127,8 @@ public class BookService {
         bookDto.available = book.isAvailable();
         bookDto.genre = book.getGenre();
         bookDto.reservation = book.getReservation();
+        bookOutputDto.setReservationOutput(book.getReservation());
+//        bookDto.reservation = bookOutputDto.setReservationOutput(book.getReservation()) ;
         return bookDto;
     }
 
@@ -144,4 +148,10 @@ public class BookService {
             throw new RuntimeException("Book/Reservation not found!");
         }
     }
+
+
+//    public BookDto simpleOutput(Book book){
+//        BookDto
+//    }
+
 }

@@ -29,17 +29,19 @@ public class BookDto {
     public Reservation reservation;
 
 
-    public BookDto bookDto(Book book) {
-        BookDto dto = new BookDto();
-        dto.isbn = book.getIsbn();
-        dto.author = book.getAuthor();
-        dto.title = book.getTitle();
-        dto.year = book.getYear();
-        dto.available = book.isAvailable();
-        dto.genre = book.getGenre();
-        dto.reservation = book.getReservation();
-        return dto;
-    }
+
+
+//    public BookDto bookDto(Book book) {
+//        BookDto dto = new BookDto();
+//        dto.isbn = book.getIsbn();
+//        dto.author = book.getAuthor();
+//        dto.title = book.getTitle();
+//        dto.year = book.getYear();
+//        dto.available = book.isAvailable();
+//        dto.genre = book.getGenre();
+//        dto.reservation = book.getReservation();
+//        return dto;
+//    }
 
 
 }

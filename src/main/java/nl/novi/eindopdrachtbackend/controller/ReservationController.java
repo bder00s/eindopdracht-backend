@@ -55,6 +55,7 @@ public class ReservationController {
         }
     }
 
+    // NIET MEER NODIG
     @PutMapping("/connectBooks/{reservationId}/{isbn}")
     public ResponseEntity<Object> assignBookToReservation(@PathVariable ("reservationId") Long reservationId, @PathVariable ("isbn") Long isbn){
         bookService.assignBookToReservation(reservationId, isbn);
@@ -62,9 +63,9 @@ public class ReservationController {
     }
 
     @PutMapping("/user/{reservationId}/{username}")
-    public ResponseEntity<Object> assignUserToReservation(@PathVariable("reservationId") Long reservationId, @PathVariable ("username") String username){
+    public String assignUserToReservation(@PathVariable("reservationId") Long reservationId, @PathVariable ("username") String username){
         reservationService.assignUserToReservation(reservationId, username);
-        return ResponseEntity.noContent().build();
+        return "Reservation " + reservationId + " connected to user: " + username;
     }
 
     @PutMapping("/update/{reservationId}")

@@ -97,7 +97,7 @@ public class ReservationService {
         reservation.setDateOfReservation(LocalDate.now());
         reservation.setReservationReady(reservationDto.reservationReady);
 
-        
+
         reservationRepository.save(reservation);
 
         // koppel boeken aan reservering
@@ -147,33 +147,33 @@ public class ReservationService {
 
 
     // OUTPUT TRANSFER DTO
-    public ReservationDto outputTransferReservationtoDto(Reservation reservation) {
-        ReservationDto reservationDto = new ReservationDto();
-        // de nieuwe dto vullen met de waardes uit Reservation
-        reservationDto.reservationId = reservation.getReservationId();
-        reservationDto.dateOfReservation = reservation.getDateOfReservation();
-        reservationDto.reservationReady = reservation.isReservationReady();
-        reservationDto.reservedBooks = reservation.getBooks();
+//    public ReservationDto outputTransferReservationtoDto(Reservation reservation) {
+//        ReservationDto reservationDto = new ReservationDto();
+//        // de nieuwe dto vullen met de waardes uit Reservation
+//        reservationDto.reservationId = reservation.getReservationId();
+//        reservationDto.dateOfReservation = reservation.getDateOfReservation();
+//        reservationDto.reservationReady = reservation.isReservationReady();
+//        reservationDto.reservedBooks = reservation.getBooks();
 //        reservationDto.user = reservation.getOwnerOfReservation();
 
-
-        return reservationDto;
-    }
+//
+//        return reservationDto;
+//    }
 
 
 
     // INPUT TRANSFER DTO
-    public Reservation inputTransferDtoToReservation(ReservationDto reservationDto) {
-        Reservation reservation = new Reservation();
-
-        reservation.setReservationId(reservationDto.reservationId);
-        reservation.setDateOfReservation(reservationDto.dateOfReservation);
-        reservation.setReservationReady(reservationDto.reservationReady);
-        reservation.setReservedBooks(reservationDto.reservedBooks);
-
-
-
-        return reservation;
-    }
+//    public Reservation inputTransferDtoToReservation(ReservationDto reservationDto) {
+//        Reservation reservation = new Reservation();
+//
+//        reservation.setReservationId(reservationDto.reservationId);
+//        reservation.setDateOfReservation(reservationDto.dateOfReservation);
+//        reservation.setReservationReady(reservationDto.reservationReady);
+//        reservation.setReservedBooks(reservationDto.reservedBooks);
+//
+//
+//
+//        return reservation;
+//    }
 
 }

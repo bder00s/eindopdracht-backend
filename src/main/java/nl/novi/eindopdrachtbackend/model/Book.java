@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import nl.novi.eindopdrachtbackend.dto.ReservationOutputDto;
 import nl.novi.eindopdrachtbackend.enummeration.Genre;
 
 @Getter
@@ -55,4 +56,6 @@ public class Book {
     public Book() {
 
     }
+
+
 }
